@@ -25,15 +25,12 @@ export const FooterLayourt = () => {
   const partner = [
     {
       name: "MTN cameroun",
-      img:""
     },
     {
       name: "Orange cameroun",
-      img:""
     },
     {
       name: "CCA Banck",
-      img:""
     }
   ]
   
@@ -41,7 +38,7 @@ export const FooterLayourt = () => {
     <>
     <Box gap={"2"}>
       <Box w={'100vw'} overflow="hidden" >
-        <Box justifyContent={"center"}>Nos partennaires</Box>
+        <Box fontFamily={'cursive'} fontSize={'xl'} fontWeight={'black'} p={2}>Nos partennaires</Box>
         <HStack
           justifyContent={'center'}
           py={{ sm: '2' }}
@@ -52,7 +49,7 @@ export const FooterLayourt = () => {
         >
           {partner.map((p, index) =>
           <Box key={index}>
-            <Image src={p.img}/>
+            {/* <Image src={p.img}/> */}
             <Strong>{p.name}</Strong>
           </Box>)}
         </HStack>
@@ -77,12 +74,12 @@ export const FooterLayourt = () => {
               <Strong fontFamily={'cursive'} fontSize={{ md: 'xl', sm: 'md' }}>
                 À propos de nous
               </Strong>
-              <Separator borderColor={'orange.solid'} size={'lg'} w={'full'} />
+              <Separator borderColor={'orange.solid'} size={'lg'} w={'full'}/>
               <Text maxW={'xs'}>{description}</Text>
             </VStack>
             <VStack>
               <Strong fontFamily={'cursive'} fontSize={{ md: 'xl', sm: 'md' }}>
-                Assistance / Service client
+                Service client
               </Strong>
               <Separator borderColor={'orange.solid'} size={'lg'} w={'full'} />
               <ul>

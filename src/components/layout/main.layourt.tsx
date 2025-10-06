@@ -9,7 +9,7 @@ const MainLayout = () => {
       <div>
         <HeaderLayourt />
         <Stack bg={'bg.muted'} justifyContent={'center'} w={'100vw'}>
-          <Box as="main" ml={{ base: 0 }} pt="48px">
+          <Box as="main" ml={{ base: 0 }} pt="65px">
             <Outlet />
           </Box>
         </Stack>

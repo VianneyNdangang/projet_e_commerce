@@ -1,6 +1,8 @@
 import MainLayout from '@/components/layout/main.layourt';
-import { createHashRouter } from 'react-router';
 import { Home } from '@/views/home/home';
+import { ListProduct } from '@/views/products/products.list';
+// import { Home } from '@/views/home/home';
+import { createHashRouter } from 'react-router';
 
 export const routers = createHashRouter(
   [
@@ -22,11 +24,11 @@ export const routers = createHashRouter(
       children: [
         {
           path: '/',
-          element: <Home/>,
+          element:<Home/>,
         },
         {
           path: '/articles',
-          element: <div> articles</div>,
+          element: <ListProduct/>,
         },
         {
           path: '/acount',

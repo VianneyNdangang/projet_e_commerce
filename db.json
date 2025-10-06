@@ -1,0 +1,688 @@
+{
+  "categories": [
+    { "id": 1, "name": "Électronique", "slug": "electronique" },
+    { "id": 2, "name": "Maison & Cuisine", "slug": "maison-cuisine" },
+    { "id": 3, "name": "Mode", "slug": "mode" },
+    { "id": 4, "name": "Beauté", "slug": "beaute" }
+  ],
+
+  "products": [
+    {
+      "id": 101,
+      "title": "Casque Bluetooth X200",
+      "slug": "casque-bluetooth-x200",
+      "description": "Casque sans fil avec réduction active du bruit, autonomie 30h, micro intégré.",
+      "categoryId": 1,
+      "category": { "id": 1, "name": "Électronique", "slug": "electronique" },
+      "price": 129.99,
+      "compareAtPrice": 159.99,
+      "currency": "EUR",
+      "stock": 48,
+      "sku": "HB-X200",
+      "tags": ["audio", "wireless", "bestseller"],
+      "images": [
+        "https://placehold.co/600x400/png/ffffff/000000?text=Casque+X200+1",
+        "https://placehold.co/600x400/png/ffffff/000000?text=Casque+X200+2"
+      ],
+      "variants": [
+        { "id": "101-1", "name": "Noir", "price": 129.99, "stock": 30 },
+        { "id": "101-2", "name": "Blanc", "price": 129.99, "stock": 18 }
+      ],
+      "rating": 4.6,
+      "reviewsCount": 23,
+      "createdAt": "2024-11-10T09:00:00Z"
+    },
+    {
+      "id": 102,
+      "title": "Machine à Espresso MiniBar",
+      "slug": "espresso-minibar",
+      "description": "Machine espresso compacte 15 bar, bac à eau 1.2L, mode économie d'énergie.",
+      "categoryId": 2,
+      "category": {
+        "id": 2,
+        "name": "Maison & Cuisine",
+        "slug": "maison-cuisine"
+      },
+      "price": 89.5,
+      "currency": "EUR",
+      "stock": 12,
+      "sku": "MB-ESP01",
+      "tags": ["cuisine", "coffee"],
+      "images": [
+        "https://placehold.co/600x400/png/ffffff/000000?text=Espresso+MiniBar"
+      ],
+      "variants": [],
+      "rating": 4.1,
+      "reviewsCount": 8,
+      "createdAt": "2025-02-03T12:30:00Z"
+    },
+    {
+      "id": 103,
+      "title": "T-shirt Organic Cotton - Unisexe",
+      "slug": "tshirt-organic-cotton",
+      "description": "T-shirt 100% coton biologique, coupe standard. Disponible en plusieurs tailles.",
+      "categoryId": 3,
+      "category": { "id": 3, "name": "Mode", "slug": "mode" },
+      "price": 19.0,
+      "currency": "EUR",
+      "stock": 210,
+      "sku": "TS-ORGCOT",
+      "tags": ["vêtement", "eco"],
+      "images": [
+        "https://placehold.co/600x400/png/ffffff/000000?text=T-shirt+Organic"
+      ],
+      "variants": [
+        { "id": "103-S", "name": "S", "price": 19.0, "stock": 40 },
+        { "id": "103-M", "name": "M", "price": 19.0, "stock": 80 },
+        { "id": "103-L", "name": "L", "price": 19.0, "stock": 60 },
+        { "id": "103-XL", "name": "XL", "price": 19.0, "stock": 30 }
+      ],
+      "rating": 4.4,
+      "reviewsCount": 52,
+      "createdAt": "2024-08-21T08:00:00Z"
+    },
+    {
+      "id": 104,
+      "title": "Palette Maquillage 12 Couches",
+      "slug": "palette-maquillage-12",
+      "description": "Palette compacte 12 fards, fini mat et pailleté, livré avec miroir.",
+      "categoryId": 4,
+      "category": { "id": 4, "name": "Beauté", "slug": "beaute" },
+      "price": 29.95,
+      "currency": "EUR",
+      "stock": 75,
+      "sku": "BEA-PA12",
+      "tags": ["makeup", "palette"],
+      "images": [
+        "https://placehold.co/600x400/png/ffffff/000000?text=Palette+12"
+      ],
+      "variants": [],
+      "rating": 4.2,
+      "reviewsCount": 18,
+      "createdAt": "2025-01-15T10:00:00Z"
+    },
+    {
+      "id": 105,
+      "title": "Lampe LED de Lecture",
+      "slug": "lampe-led-lecture",
+      "description": "Lampe LED à intensité réglable, bras flexible, port USB intégré.",
+      "categoryId": 2,
+      "category": {
+        "id": 2,
+        "name": "Maison & Cuisine",
+        "slug": "maison-cuisine"
+      },
+      "price": 24.99,
+      "currency": "EUR",
+      "stock": 130,
+      "sku": "LM-LED01",
+      "tags": ["éclairage", "bureau"],
+      "images": [
+        "https://placehold.co/600x400/png/ffffff/000000?text=Lampe+LED"
+      ],
+      "variants": [],
+      "rating": 4.5,
+      "reviewsCount": 34,
+      "createdAt": "2024-09-30T14:20:00Z"
+    },
+    {
+      "id": 106,
+      "title": "Chargeur Rapide USB-C 30W",
+      "slug": "chargeur-usb-c-30w",
+      "description": "Charge rapide 30W compatible laptops, smartphones et tablettes.",
+      "categoryId": 1,
+      "category": { "id": 1, "name": "Électronique", "slug": "electronique" },
+      "price": 17.5,
+      "currency": "EUR",
+      "stock": 300,
+      "sku": "CH-30C",
+      "tags": ["chargeur", "usb-c"],
+      "images": [
+        "https://placehold.co/600x400/png/ffffff/000000?text=Chargeur+30W"
+      ],
+      "variants": [],
+      "rating": 4.7,
+      "reviewsCount": 91,
+      "createdAt": "2024-06-05T09:45:00Z"
+    },
+    {
+      "id": 107,
+      "title": "Sac à Dos Urbain 20L",
+      "slug": "sac-a-dos-urbain-20l",
+      "description": "Sac à dos résistant à l'eau, poche laptop 15\", sangle poitrine.",
+      "categoryId": 3,
+      "category": { "id": 3, "name": "Mode", "slug": "mode" },
+      "price": 54.0,
+      "currency": "EUR",
+      "stock": 64,
+      "sku": "SB-URB20",
+      "tags": ["sac", "outdoor"],
+      "images": [
+        "https://placehold.co/600x400/png/ffffff/000000?text=Sac+Urbain+20L"
+      ],
+      "variants": [
+        { "id": "107-noir", "name": "Noir", "price": 54.0, "stock": 30 },
+        { "id": "107-bleu", "name": "Bleu", "price": 54.0, "stock": 24 },
+        { "id": "107-gris", "name": "Gris", "price": 54.0, "stock": 10 }
+      ],
+      "rating": 4.3,
+      "reviewsCount": 27,
+      "createdAt": "2024-12-01T07:10:00Z"
+    },
+    {
+      "id": 108,
+      "title": "Set de Couteaux de Cuisine (5 pcs)",
+      "slug": "set-couteaux-5pcs",
+      "description": "Lames en acier inoxydable, manche ergonomique, bloc en bois inclus.",
+      "categoryId": 2,
+      "category": {
+        "id": 2,
+        "name": "Maison & Cuisine",
+        "slug": "maison-cuisine"
+      },
+      "price": 39.99,
+      "currency": "EUR",
+      "stock": 40,
+      "sku": "CK-SET5",
+      "tags": ["cuisine", "couteaux"],
+      "images": [
+        "https://placehold.co/600x400/png/ffffff/000000?text=Set+Couteaux+5pcs"
+      ],
+      "variants": [],
+      "rating": 4.0,
+      "reviewsCount": 12,
+      "createdAt": "2024-10-05T11:00:00Z"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Alice",
+      "lastName": "Moreau",
+      "email": "alice.moreau@example.com",
+      "password": "password123",
+      "phone": "+33 6 12 34 56 78",
+      "createdAt": "2024-07-10T15:00:00Z",
+      "isAdmin": false
+    },
+    {
+      "id": 2,
+      "firstName": "Marc",
+      "lastName": "Leroy",
+      "email": "marc.leroy@example.com",
+      "password": "secret456",
+      "phone": "+33 6 87 65 43 21",
+      "createdAt": "2024-08-01T09:20:00Z",
+      "isAdmin": true
+    },
+    {
+      "id": 3,
+      "firstName": "Sophie",
+      "lastName": "Durand",
+      "email": "sophie.durand@example.com",
+      "password": "sophiepwd",
+      "phone": null,
+      "createdAt": "2025-03-02T10:05:00Z",
+      "isAdmin": false
+    },
+    {
+      "id": 4,
+      "firstName": "Test",
+      "lastName": "Client",
+      "email": "client.test@example.com",
+      "password": "test",
+      "phone": null,
+      "createdAt": "2025-04-15T08:00:00Z",
+      "isAdmin": false
+    }
+  ],
+
+  "addresses": [
+    {
+      "id": 1,
+      "userId": 1,
+      "label": "Domicile",
+      "street": "12 rue Victor Hugo",
+      "city": "Lyon",
+      "postalCode": "69002",
+      "country": "FR",
+      "createdAt": "2024-07-10T15:10:00Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "label": "Bureau",
+      "street": "5 avenue des Champs",
+      "city": "Paris",
+      "postalCode": "75008",
+      "country": "FR",
+      "createdAt": "2024-08-02T08:00:00Z"
+    },
+    {
+      "id": 3,
+      "userId": 3,
+      "label": "Appartement",
+      "street": "48 route de Nantes",
+      "city": "Rennes",
+      "postalCode": "35000",
+      "country": "FR",
+      "createdAt": "2025-03-02T10:10:00Z"
+    }
+  ],
+
+  "orders": [
+    {
+      "id": 5001,
+      "userId": 1,
+      "items": [
+        {
+          "productId": 101,
+          "variantId": "101-1",
+          "title": "Casque Bluetooth X200 (Noir)",
+          "quantity": 1,
+          "unitPrice": 129.99
+        },
+        {
+          "productId": 106,
+          "variantId": null,
+          "title": "Chargeur Rapide USB-C 30W",
+          "quantity": 1,
+          "unitPrice": 17.5
+        }
+      ],
+      "subtotal": 147.49,
+      "shipping": 6.9,
+      "tax": 31.28,
+      "discount": 10.0,
+      "total": 175.67,
+      "currency": "EUR",
+      "shippingAddressId": 1,
+      "billingAddressId": 1,
+      "paymentMethod": "card",
+      "paymentStatus": "paid",
+      "status": "delivered",
+      "placedAt": "2025-03-22T10:15:00Z",
+      "deliveredAt": "2025-03-27T14:00:00Z"
+    },
+    {
+      "id": 5002,
+      "userId": 3,
+      "items": [
+        {
+          "productId": 103,
+          "variantId": "103-M",
+          "title": "T-shirt Organic Cotton (M)",
+          "quantity": 2,
+          "unitPrice": 19.0
+        },
+        {
+          "productId": 105,
+          "variantId": null,
+          "title": "Lampe LED de Lecture",
+          "quantity": 1,
+          "unitPrice": 24.99
+        }
+      ],
+      "subtotal": 61.99,
+      "shipping": 4.5,
+      "tax": 13.1,
+      "discount": 0,
+      "total": 79.59,
+      "currency": "EUR",
+      "shippingAddressId": 3,
+      "billingAddressId": 3,
+      "paymentMethod": "paypal",
+      "paymentStatus": "paid",
+      "status": "shipped",
+      "placedAt": "2025-05-01T09:30:00Z",
+      "shippedAt": "2025-05-02T16:00:00Z"
+    },
+    {
+      "id": 5003,
+      "userId": 4,
+      "items": [
+        {
+          "productId": 108,
+          "variantId": null,
+          "title": "Set de Couteaux de Cuisine (5 pcs)",
+          "quantity": 1,
+          "unitPrice": 39.99
+        }
+      ],
+      "subtotal": 39.99,
+      "shipping": 5.0,
+      "tax": 9.1,
+      "discount": 5.0,
+      "total": 49.09,
+      "currency": "EUR",
+      "shippingAddressId": null,
+      "billingAddressId": null,
+      "paymentMethod": "card",
+      "paymentStatus": "pending",
+      "status": "processing",
+      "placedAt": "2025-06-18T11:00:00Z"
+    },
+    {
+      "id": 5004,
+      "userId": 2,
+      "items": [
+        {
+          "productId": 107,
+          "variantId": "107-noir",
+          "title": "Sac à Dos Urbain 20L (Noir)",
+          "quantity": 1,
+          "unitPrice": 54.0
+        },
+        {
+          "productId": 104,
+          "variantId": null,
+          "title": "Palette Maquillage 12 Couches",
+          "quantity": 1,
+          "unitPrice": 29.95
+        }
+      ],
+      "subtotal": 83.95,
+      "shipping": 0,
+      "tax": 17.58,
+      "discount": 8.95,
+      "total": 92.58,
+      "currency": "EUR",
+      "shippingAddressId": 2,
+      "billingAddressId": 2,
+      "paymentMethod": "card",
+      "paymentStatus": "paid",
+      "status": "delivered",
+      "placedAt": "2025-02-20T13:00:00Z",
+      "deliveredAt": "2025-02-25T10:30:00Z"
+    },
+    {
+      "id": 5005,
+      "userId": 1,
+      "items": [
+        {
+          "productId": 106,
+          "variantId": null,
+          "title": "Chargeur Rapide USB-C 30W",
+          "quantity": 3,
+          "unitPrice": 17.5
+        }
+      ],
+      "subtotal": 52.5,
+      "shipping": 4.0,
+      "tax": 11.13,
+      "discount": 0,
+      "total": 67.63,
+      "currency": "EUR",
+      "shippingAddressId": 1,
+      "billingAddressId": 1,
+      "paymentMethod": "card",
+      "paymentStatus": "paid",
+      "status": "delivered",
+      "placedAt": "2025-04-10T09:00:00Z",
+      "deliveredAt": "2025-04-12T12:00:00Z"
+    }
+  ],
+
+  "reviews": [
+    {
+      "id": 9001,
+      "productId": 101,
+      "userId": 1,
+      "rating": 5,
+      "title": "Super son",
+      "body": "Très bon confort et excellente réduction de bruit.",
+      "createdAt": "2025-03-25T12:00:00Z"
+    },
+    {
+      "id": 9002,
+      "productId": 106,
+      "userId": 2,
+      "rating": 5,
+      "title": "Rapide et compact",
+      "body": "Charge mon téléphone très vite, petit format.",
+      "createdAt": "2024-07-12T08:30:00Z"
+    },
+    {
+      "id": 9003,
+      "productId": 103,
+      "userId": 3,
+      "rating": 4,
+      "title": "Bon coton",
+      "body": "Tissu agréable, taille fidèle.",
+      "createdAt": "2025-05-03T11:20:00Z"
+    },
+    {
+      "id": 9004,
+      "productId": 105,
+      "userId": 1,
+      "rating": 4,
+      "title": "Pratique",
+      "body": "Luminosité suffisante pour la lecture.",
+      "createdAt": "2024-10-10T09:00:00Z"
+    },
+    {
+      "id": 9005,
+      "productId": 104,
+      "userId": 4,
+      "rating": 3,
+      "title": "Bien pour débuter",
+      "body": "Couleurs sympas mais pigments moyens.",
+      "createdAt": "2025-01-20T17:45:00Z"
+    },
+    {
+      "id": 9006,
+      "productId": 107,
+      "userId": 2,
+      "rating": 5,
+      "title": "Solide",
+      "body": "Parfait pour la ville, beaucoup de poches utiles.",
+      "createdAt": "2025-02-22T08:05:00Z"
+    }
+  ],
+
+  "coupons": [
+    {
+      "id": 1,
+      "code": "WELCOME10",
+      "type": "percent",
+      "value": 10,
+      "minOrder": 0,
+      "expiresAt": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "code": "FREESHIP",
+      "type": "free_shipping",
+      "value": 0,
+      "minOrder": 50,
+      "expiresAt": "2025-12-31T23:59:59Z"
+    }
+  ],
+
+  "settings": {
+    "storeName": "DemoShop",
+    "currency": "EUR",
+    "taxRatePercent": 20,
+    "supportEmail": "support@demoshop.example"
+  },
+
+  "carts": [
+    {
+      "id": "cart_1_alice",
+      "userId": 1,
+      "items": [
+        {
+          "productId": 103,
+          "variantId": "103-L",
+          "quantity": 1,
+          "unitPrice": 19.0
+        }
+      ],
+      "updatedAt": "2025-06-20T10:00:00Z"
+    }
+  ],
+
+  "categoriesProducts": [
+    {
+      "id": 1,
+      "name": "Électronique",
+      "slug": "electronique",
+      "products": [
+        {
+          "id": 101,
+          "title": "Casque Bluetooth X200",
+          "price": 129.99,
+          "stock": 48
+        },
+        {
+          "id": 106,
+          "title": "Chargeur Rapide USB-C 30W",
+          "price": 17.5,
+          "stock": 300
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Maison & Cuisine",
+      "slug": "maison-cuisine",
+      "products": [
+        {
+          "id": 102,
+          "title": "Machine à Espresso MiniBar",
+          "price": 89.5,
+          "stock": 12
+        },
+        {
+          "id": 105,
+          "title": "Lampe LED de Lecture",
+          "price": 24.99,
+          "stock": 130
+        },
+        {
+          "id": 108,
+          "title": "Set de Couteaux de Cuisine (5 pcs)",
+          "price": 39.99,
+          "stock": 40
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Mode",
+      "slug": "mode",
+      "products": [
+        {
+          "id": 103,
+          "title": "T-shirt Organic Cotton - Unisexe",
+          "price": 19.0,
+          "stock": 210
+        },
+        {
+          "id": 107,
+          "title": "Sac à Dos Urbain 20L",
+          "price": 54.0,
+          "stock": 64
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Beauté",
+      "slug": "beaute",
+      "products": [
+        {
+          "id": 104,
+          "title": "Palette Maquillage 12 Couches",
+          "price": 29.95,
+          "stock": 75
+        }
+      ]
+    }
+  ],
+  "bestSellersByCategory": [
+    {
+      "id": 1,
+      "name": "Électronique",
+      "slug": "electronique",
+      "bestSellers": [
+        {
+          "id": 106,
+          "title": "Chargeur Rapide USB-C 30W",
+          "price": 17.5,
+          "rating": 4.7,
+          "reviewsCount": 91
+        },
+        {
+          "id": 101,
+          "title": "Casque Bluetooth X200",
+          "image": "https://static.nike.com/a/images/t_prod_ss/w_640,c_limit,f_auto/66f0f8b2-8d4a-4201-b334-c1fdf9ca3e5e/air-max-270-chaussure-PgbqWd.png",
+          "price": 129.99,
+          "rating": 4.6,
+          "reviewsCount": 23
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Maison & Cuisine",
+      "slug": "maison-cuisine",
+      "bestSellers": [
+        {
+          "id": 105,
+          "title": "Lampe LED de Lecture",
+          "image": "https://static.nike.com/a/images/t_prod_ss/w_640,c_limit,f_auto/66f0f8b2-8d4a-4201-b334-c1fdf9ca3e5e/air-max-270-chaussure-PgbqWd.png",
+          "price": 24.99,
+          "rating": 4.5,
+          "reviewsCount": 34
+        },
+        {
+          "id": 102,
+          "title": "Machine à Espresso MiniBar",
+          "image": "https://static.nike.com/a/images/t_prod_ss/w_640,c_limit,f_auto/66f0f8b2-8d4a-4201-b334-c1fdf9ca3e5e/air-max-270-chaussure-PgbqWd.png",
+          "price": 89.5,
+          "rating": 4.1,
+          "reviewsCount": 8
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Mode",
+      "slug": "mode",
+      "bestSellers": [
+        {
+          "id": 103,
+          "title": "T-shirt Organic Cotton - Unisexe",
+          "image": "https://static.nike.com/a/images/t_prod_ss/w_640,c_limit,f_auto/66f0f8b2-8d4a-4201-b334-c1fdf9ca3e5e/air-max-270-chaussure-PgbqWd.png",
+          "price": 19.0,
+          "rating": 4.4,
+          "reviewsCount": 52
+        },
+        {
+          "id": 107,
+          "title": "Sac à Dos Urbain 20L",
+          "image": "https://static.nike.com/a/images/t_prod_ss/w_640,c_limit,f_auto/66f0f8b2-8d4a-4201-b334-c1fdf9ca3e5e/air-max-270-chaussure-PgbqWd.png",
+          "price": 54.0,
+          "rating": 4.3,
+          "reviewsCount": 27
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Beauté",
+      "slug": "beaute",
+      "bestSellers": [
+        {
+          "id": 104,
+          "title": "Palette Maquillage 12 Couches",
+          "image": "https://static.nike.com/a/images/t_prod_ss/w_640,c_limit,f_auto/66f0f8b2-8d4a-4201-b334-c1fdf9ca3e5e/air-max-270-chaussure-PgbqWd.png",
+          "price": 29.95,
+          "rating": 4.2,
+          "reviewsCount": 18
+        }
+      ]
+    }
+  ]
+}
