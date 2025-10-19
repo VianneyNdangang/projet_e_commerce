@@ -18,6 +18,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { MdStackedBarChart } from 'react-icons/md';
+import { useNavigate } from 'react-router';
 
 type Props = {
   items?: any[];
@@ -26,7 +27,7 @@ type Props = {
 
 export const HomeProductTable = ({ items, title }: Props) => {
   const { open, onToggle } = useDisclosure();
-  
+  const navigate = useNavigate();
   return (
     <>
       <div>
@@ -135,12 +136,15 @@ export const HomeProductTable = ({ items, title }: Props) => {
                           gap={{ base: '1', md: '2' }}
                           px={{ md: 10 }}
                         >
-                          {item.bestSellers.map((best, inde) => (
+                          {item.bestSellers.map((best: any, inde: any) => (
                             <Box
-                              bg={'white'}
-                              key={inde}
-                              p={{ sm: 3, base: 1 }}
-                              rounded={'md'}
+                            bg={'white'}
+                            key={inde}
+                            p={{ sm: 3, base: 1 }}
+                            rounded={'md'}
+                            onClick={()=> navigate(`product/${best.id}`)}
+                            _hover={{ boxShadow: "xl" }}
+                                  transition="box-shadow 0.3s ease"
                             >
                               <Image src={best.image} w={'full'} />
                               <Strong justifyContent={'center'}>
