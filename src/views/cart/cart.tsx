@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -14,71 +14,46 @@ import {
   VStack,
   Badge,
   Input,
-} from '@chakra-ui/react';
-import { FaTrash, FaMinus, FaPlus, FaShoppingBag, FaArrowLeft } from 'react-icons/fa';
-import { useNavigate } from 'react-router';
-
-interface CartItem {
-  id: string;
-  productId: number;
-  variantId?: string;
-  title: string;
-  price: number;
-  quantity: number;
-  image: string;
-  stock: number;
-}
+} from "@chakra-ui/react";
+import {
+  FaTrash,
+  FaMinus,
+  FaPlus,
+  FaShoppingBag,
+  FaArrowLeft,
+} from "react-icons/fa";
+import { useNavigate } from "react-router";
+import type { CartItem } from "@/types/product.types";
+import { instance } from "@/helpers/api";
+import { CustomButton } from "@/components/ui/form/button.component";
 
 export const Cart = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [couponCode, setCouponCode] = useState('');
+  const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState<{
     code: string;
     type: string;
     value: number;
   } | null>(null);
 
-  useEffect(() => {
-    // Données de démonstration pour le panier
-    const mockCartItems: CartItem[] = [
-      {
-        id: '1',
-        productId: 101,
-        variantId: '101-1',
-        title: 'Casque Bluetooth X200 (Noir)',
-        price: 129.99,
-        quantity: 1,
-        image: 'https://placehold.co/300x200/png/ffffff/000000?text=Casque+X200',
-        stock: 30
-      },
-      {
-        id: '2',
-        productId: 106,
-        title: 'Chargeur Rapide USB-C 30W',
-        price: 17.5,
-        quantity: 2,
-        image: 'https://placehold.co/300x200/png/ffffff/000000?text=Chargeur+30W',
-        stock: 300
-      },
-      {
-        id: '3',
-        productId: 103,
-        variantId: '103-M',
-        title: 'T-shirt Organic Cotton (M)',
-        price: 19.0,
-        quantity: 3,
-        image: 'https://placehold.co/300x200/png/ffffff/000000?text=T-shirt+Organic',
-        stock: 80
-      }
-    ];
+  const items = () => {
+    return instance({
+      url: "carts",
+      method: "get",
+    });
+  };
 
-    // Simulation du chargement des données
-    setTimeout(() => {
-      setCartItems(mockCartItems);
-      setLoading(false);
-    }, 1000);
+  useEffect(() => {
+    const load = async () => {
+      const mockCartItems = await items();
+      setTimeout(() => {
+        setCartItems(mockCartItems.data);
+        setLoading(false);
+      }, 1000);
+    };
+    load();
   }, []);
 
   const updateQuantity = (itemId: string, newQuantity: number) => {
@@ -86,45 +61,65 @@ export const Cart = () => {
       removeItem(itemId);
       return;
     }
-    
-    setCartItems(prev => 
-      prev.map(item => 
-        item.id === itemId 
+
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === itemId
           ? { ...item, quantity: Math.min(newQuantity, item.stock) }
           : item
       )
     );
   };
 
-  const removeItem = (itemId: string) => {
-    setCartItems(prev => prev.filter(item => item.id !== itemId));
-    alert('Article supprimé du panier');
+  const del = async (id: string) => {
+    const request = await instance.delete(`carts/${id}`);
+    console.log("responseresponse", request.status);
+    if (request.status == 200) {
+      setCartItems((prev) => prev.filter((item) => item.id !== id));
+    }
   };
 
-  const applyCoupon = () => {
+  const removeItem = (itemId: string) => {
+    try {
+      del(itemId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const applyCoupon = async() => {
     if (!couponCode.trim()) return;
-    
+    const validCoupons: any[] = []
     // Simulation de l'application d'un coupon
-    const validCoupons = ['WELCOME10', 'FREESHIP'];
+    const items = await instance.get(`coupons`)
+    items?.data.forEach((element: any) => {
+      validCoupons.push(element.code);
+    });
     if (validCoupons.includes(couponCode.toUpperCase())) {
+      const item = items?.data.find((element:any) => element.code = couponCode.toUpperCase())
+      console.log("itemitemitem",item)
       setAppliedCoupon({
-        code: couponCode.toUpperCase(),
-        type: couponCode.toUpperCase() === 'WELCOME10' ? 'percent' : 'free_shipping',
-        value: couponCode.toUpperCase() === 'WELCOME10' ? 10 : 0
+        code: item?.code,
+        type: item?.type,
+        value: item?.value,
       });
+      console.log("appliedCouponappliedCoupon",appliedCoupon)
       alert(`Coupon ${couponCode.toUpperCase()} appliqué avec succès !`);
     } else {
-      alert('Code coupon invalide');
+      alert("Code coupon invalide");
     }
   };
 
   const calculateSubtotal = () => {
-    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
   };
 
   const calculateShipping = () => {
     const subtotal = calculateSubtotal();
-    if (appliedCoupon?.code === 'FREESHIP' || subtotal >= 50) {
+    if (appliedCoupon?.code === "FREESHIP" || subtotal >= 50) {
       return 0;
     }
     return 6.9;
@@ -133,7 +128,7 @@ export const Cart = () => {
   const calculateDiscount = () => {
     if (!appliedCoupon) return 0;
     const subtotal = calculateSubtotal();
-    if (appliedCoupon.type === 'percent') {
+    if (appliedCoupon.type === "percent") {
       return (subtotal * appliedCoupon.value) / 100;
     }
     return 0;
@@ -147,7 +142,7 @@ export const Cart = () => {
   };
 
   const proceedToCheckout = () => {
-    alert('Redirection vers la page de commande...');
+    alert("Redirection vers la page de commande...");
     // navigate('/checkout');
   };
 
@@ -155,7 +150,9 @@ export const Cart = () => {
     return (
       <Container maxW="7xl" py={8}>
         <VStack gap={8}>
-          <Heading size="xl" textAlign="center">Chargement du panier...</Heading>
+          <Heading size="xl" textAlign="center">
+            Chargement du panier...
+          </Heading>
         </VStack>
       </Container>
     );
@@ -163,22 +160,24 @@ export const Cart = () => {
 
   if (cartItems.length === 0) {
     return (
-      <Container maxW="7xl" py={8}>
-        <VStack gap={8} textAlign="center">
+      <Container w={"full"} py={8}>
+        <VStack gap={8} textAlign="center" w={"full"}>
           <Box>
             <FaShoppingBag size={64} color="#CBD5E0" />
           </Box>
-          <Heading size="xl" color="gray.500">Votre panier est vide</Heading>
+          <Heading size="xl" color="gray.500">
+            Votre panier est vide
+          </Heading>
           <Text color="gray.400" fontSize="lg">
             Découvrez nos produits et ajoutez-les à votre panier
           </Text>
           <Button
             colorScheme="blue"
             size="lg"
-            onClick={() => navigate('/articles')}
+            onClick={() => navigate("/articles")}
             _hover={{
               transform: "translateY(-2px)",
-              shadow: "lg"
+              shadow: "lg",
             }}
           >
             Découvrir nos produits
@@ -189,10 +188,10 @@ export const Cart = () => {
   }
 
   return (
-    <Container maxW="7xl" py={8}>
+    <Container w={"full"} py={8}>
       <VStack gap={8} align="stretch">
         {/* Header */}
-        <Flex justify="space-between" align="center">
+        <Flex justify="space-between" align="center" w={"full"}>
           <HStack gap={4}>
             <IconButton
               aria-label="Retour"
@@ -203,17 +202,29 @@ export const Cart = () => {
             </IconButton>
             <Heading size="xl">Mon Panier</Heading>
             <Badge colorScheme="blue" fontSize="sm" px={3} py={1}>
-              {cartItems.length} article{cartItems.length > 1 ? 's' : ''}
+              {cartItems.length} article{cartItems.length > 1 ? "s" : ""}
             </Badge>
           </HStack>
         </Flex>
 
-        <Grid templateColumns={{ base: '1fr', lg: '2fr 1fr' }} gap={8}>
+        <Grid templateColumns={{ base: "1fr", md: "2fr 1fr" }} gap={8}>
           {/* Liste des articles */}
           <VStack gap={4} align="stretch">
             {cartItems.map((item) => (
-              <Box key={item.id} p={6} shadow="md" border="1px solid" borderColor="gray.200" borderRadius="md" bg="white">
-                <Grid templateColumns={{ base: '1fr', md: 'auto 1fr auto' }} gap={4} alignItems="center">
+              <Box
+                key={item.id}
+                p={6}
+                shadow="md"
+                border="1px solid"
+                borderColor="gray.200"
+                borderRadius="md"
+                bg="white"
+              >
+                <Grid
+                  templateColumns={{ base: "1fr", md: "auto 1fr auto" }}
+                  gap={4}
+                  alignItems="center"
+                >
                   {/* Image */}
                   <Image
                     src={item.image}
@@ -244,14 +255,20 @@ export const Cart = () => {
                       <IconButton
                         aria-label="Diminuer quantité"
                         size="sm"
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onClick={() =>
+                          updateQuantity(item.id, item.quantity - 1)
+                        }
                         disabled={item.quantity <= 1}
+                        color={"gray.500"}
+                        bg={"none"}
                       >
                         <FaMinus />
                       </IconButton>
                       <Input
                         value={item.quantity}
-                        onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 0)}
+                        onChange={(e) =>
+                          updateQuantity(item.id, parseInt(e.target.value) || 0)
+                        }
                         w="60px"
                         textAlign="center"
                         size="sm"
@@ -261,8 +278,12 @@ export const Cart = () => {
                       <IconButton
                         aria-label="Augmenter quantité"
                         size="sm"
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onClick={() =>
+                          updateQuantity(item.id, item.quantity + 1)
+                        }
                         disabled={item.quantity >= item.stock}
+                        color={"gray.500"}
+                        bg={"none"}
                       >
                         <FaPlus />
                       </IconButton>
@@ -276,8 +297,9 @@ export const Cart = () => {
                     {/* Bouton supprimer */}
                     <IconButton
                       aria-label="Supprimer l'article"
+                      bg={"none"}
                       size="sm"
-                      colorScheme="red"
+                      color="red"
                       variant="outline"
                       onClick={() => removeItem(item.id)}
                     >
@@ -290,23 +312,40 @@ export const Cart = () => {
           </VStack>
 
           {/* Résumé de commande */}
-          <Box p={6} shadow="lg" border="1px solid" borderColor="gray.200" borderRadius="md" bg="white" h="fit-content">
+          <Box
+            p={6}
+            shadow="lg"
+            border="1px solid"
+            borderColor="gray.200"
+            borderRadius="md"
+            bg="white"
+            h="fit-content"
+          >
             <VStack gap={4} align="stretch">
-              <Heading size="md" color="gray.800">Résumé de commande</Heading>
-              
+              <Heading size="md" color="gray.800">
+                Résumé de commande
+              </Heading>
+
               <Separator />
 
               {/* Sous-total */}
               <Flex justify="space-between">
                 <Text>Sous-total</Text>
-                <Text fontWeight="bold">{calculateSubtotal().toFixed(2)} €</Text>
+                <Text fontWeight="bold">
+                  {calculateSubtotal().toFixed(2)} €
+                </Text>
               </Flex>
 
               {/* Livraison */}
               <Flex justify="space-between">
                 <Text>Livraison</Text>
-                <Text fontWeight="bold" color={calculateShipping() === 0 ? "green.500" : "gray.800"}>
-                  {calculateShipping() === 0 ? "Gratuite" : `${calculateShipping().toFixed(2)} €`}
+                <Text
+                  fontWeight="bold"
+                  color={calculateShipping() === 0 ? "green.500" : "gray.800"}
+                >
+                  {calculateShipping() === 0
+                    ? "Gratuite"
+                    : `${calculateShipping().toFixed(2)} €`}
                 </Text>
               </Flex>
 
@@ -314,21 +353,30 @@ export const Cart = () => {
               {appliedCoupon && (
                 <Flex justify="space-between" color="green.500">
                   <Text>Remise ({appliedCoupon.code})</Text>
-                  <Text fontWeight="bold">-{calculateDiscount().toFixed(2)} €</Text>
+                  <Text fontWeight="bold">
+                    -{calculateDiscount().toFixed(2)} €
+                  </Text>
                 </Flex>
               )}
 
               <Separator />
 
               {/* Total */}
-              <Flex justify="space-between" fontSize="xl" fontWeight="bold" color="blue.600">
+              <Flex
+                justify="space-between"
+                fontSize="xl"
+                fontWeight="bold"
+                color="blue.600"
+              >
                 <Text>Total</Text>
                 <Text>{calculateTotal().toFixed(2)} €</Text>
               </Flex>
 
               {/* Code promo */}
               <VStack gap={2} align="stretch">
-                <Text fontSize="sm" color="gray.600">Code promo</Text>
+                <Text fontSize="sm" color="gray.600">
+                  Code promo
+                </Text>
                 <HStack>
                   <Input
                     placeholder="Entrez votre code"
@@ -336,14 +384,17 @@ export const Cart = () => {
                     onChange={(e) => setCouponCode(e.target.value)}
                     size="sm"
                   />
-                  <Button
-                    colorScheme="blue"
-                    size="sm"
+                  <CustomButton
+                    label={"Appliquer"}
+                    size={"sm"}
                     onClick={applyCoupon}
                     disabled={!couponCode.trim()}
-                  >
-                    Appliquer
-                  </Button>
+                    color={"white"}
+                    bg={"blue.500"}
+                    type={"button"}
+                    bg_H="blue.600"
+                    shadow_h="lg"
+                  />
                 </HStack>
                 {appliedCoupon && (
                   <Text fontSize="sm" color="green.500">
@@ -354,27 +405,28 @@ export const Cart = () => {
 
               {/* Boutons d'action */}
               <VStack gap={3} w="full">
-                <Button
-                  colorScheme="blue"
-                  size="lg"
-                  w="full"
+                <CustomButton
+                  label={"Passer la commande"}
+                  size={"lg"}
                   onClick={proceedToCheckout}
-                  _hover={{
-                    transform: "translateY(-2px)",
-                    shadow: "lg"
-                  }}
-                >
-                  Passer la commande
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  size="lg"
+                  color={"white"}
+                  bg={"blue.500"}
+                  type={"button"}
                   w="full"
-                  onClick={() => navigate('/articles')}
-                >
-                  Continuer mes achats
-                </Button>
+                  bg_H="blue.600"
+                  shadow_h="lg"
+                />
+                <CustomButton
+                  label={"Continuer mes achats"}
+                  size={"lg"}
+                  onClick={() => navigate("/articles")}
+                  color={"black"}
+                  bg={"gray.100"}
+                  type={"button"}
+                  w="full"
+                  bg_H="gray.200"
+                  shadow_h="lg"
+                />
               </VStack>
 
               {/* Informations de sécurité */}

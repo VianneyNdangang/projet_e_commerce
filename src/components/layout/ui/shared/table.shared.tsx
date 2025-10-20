@@ -124,7 +124,7 @@ export const Table = ({ items, title }: Props) => {
                         {/* Image Container */}
                         <Box position="relative" overflow="hidden">
                           <Image 
-                            src={product.image} 
+                            src={product?.image} 
                             alt={product.title}
                             w="full"
                             h="200px"

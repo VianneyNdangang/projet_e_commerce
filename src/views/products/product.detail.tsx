@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import {
   Box,
   Button,
@@ -17,17 +17,26 @@ import {
   Container,
   Separator,
   Input,
-} from '@chakra-ui/react';
-import { instance } from '@/helpers/api';
-import { FaHeart, FaShoppingCart, FaShare, FaMinus, FaPlus } from 'react-icons/fa';
-import type { Product, ProductVariant, Review } from '@/types/product.types';
+} from "@chakra-ui/react";
+import { instance } from "@/helpers/api";
+import {
+  FaHeart,
+  FaShoppingCart,
+  FaShare,
+  FaMinus,
+  FaPlus,
+} from "react-icons/fa";
+import type { Product, ProductVariant, Review } from "@/types/product.types";
 
 export const ProductDetail = () => {
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
+    null
+  );
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -37,19 +46,22 @@ export const ProductDetail = () => {
         setLoading(true);
         const [productResponse, reviewsResponse] = await Promise.all([
           instance.get(`/products/${id}`),
-          instance.get(`/reviews?productId=${id}`)
+          instance.get(`/reviews?productId=${id}`),
         ]);
-        
+
         setProduct(productResponse.data);
         setReviews(reviewsResponse.data);
-        
+
         // Sélectionner la première variante par défaut
-        if (productResponse.data.variants && productResponse.data.variants.length > 0) {
+        if (
+          productResponse.data.variants &&
+          productResponse.data.variants.length > 0
+        ) {
           setSelectedVariant(productResponse.data.variants[0]);
         }
       } catch (error) {
-        console.error('Erreur lors du chargement du produit:', error);
-        alert('Impossible de charger les détails du produit');
+        console.error("Erreur lors du chargement du produit:", error);
+        alert("Impossible de charger les détails du produit");
       } finally {
         setLoading(false);
       }
@@ -60,8 +72,29 @@ export const ProductDetail = () => {
     }
   }, [id]);
 
+  const Add = async (data: any) => {
+      const request = await instance.post(`carts`, {
+        userId: 1,
+        productId: data?.id,
+        title: data?.title,
+        price: data?.price,
+        quantity: quantity,
+        image: data?.images[0],
+        stock: data?.stock,
+      });
+      if (request.status == 200) {
+        alert(`${product?.title} a été ajouté au panier`);
+      }
+  };
+
   const handleAddToCart = () => {
-    alert(`${product?.title} a été ajouté au panier`);
+    try {
+      setLoading(true)
+      Add(product);
+      navigate(-1)
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleAddToWishlist = () => {
@@ -77,7 +110,7 @@ export const ProductDetail = () => {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('Le lien du produit a été copié dans le presse-papiers');
+      alert("Le lien du produit a été copié dans le presse-papiers");
     }
   };
 
@@ -91,7 +124,6 @@ export const ProductDetail = () => {
       </Center>
     );
   }
-
   if (!product) {
     return (
       <Center minH="50vh">
@@ -102,19 +134,37 @@ export const ProductDetail = () => {
 
   const currentPrice = selectedVariant ? selectedVariant.price : product.price;
   const currentStock = selectedVariant ? selectedVariant.stock : product.stock;
-  const hasDiscount = product.compareAtPrice && product.compareAtPrice > currentPrice;
-  const discountPercentage = hasDiscount 
-    ? Math.round(((product.compareAtPrice! - currentPrice) / product.compareAtPrice!) * 100)
+  const hasDiscount =
+    product.compareAtPrice && product.compareAtPrice > currentPrice;
+  const discountPercentage = hasDiscount
+    ? Math.round(
+        ((product.compareAtPrice! - currentPrice) / product.compareAtPrice!) *
+          100
+      )
     : 0;
 
   return (
-    <Container w={"full"} py={8} >
-      <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={8} bg="white" rounded="md" p={4} shadow="md">
+    <Container w={"full"} py={8}>
+      <Grid
+        templateColumns={{ base: "1fr", lg: "1fr 1fr" }}
+        gap={8}
+        bg="white"
+        rounded="md"
+        p={4}
+        shadow="md"
+      >
         {/* Images du produit */}
         <Box bg="white" rounded="md" p={4}>
           <VStack gap={4} bg="white" rounded="md" p={4}>
             {/* Image principale */}
-            <Box position="relative" borderRadius="lg" overflow="hidden" bg="white" rounded="md" p={4}>
+            <Box
+              position="relative"
+              borderRadius="lg"
+              overflow="hidden"
+              bg="white"
+              rounded="md"
+              p={4}
+            >
               <Image
                 src={product.images[selectedImageIndex]}
                 alt={product.title}
@@ -153,11 +203,14 @@ export const ProductDetail = () => {
                     objectFit="cover"
                     borderRadius="md"
                     cursor="pointer"
-                    border={selectedImageIndex === index ? "2px solid" : "1px solid"}
-                    borderColor={selectedImageIndex === index ? "blue.500" : "gray.200"}
+                    border={
+                      selectedImageIndex === index ? "2px solid" : "1px solid"
+                    }
+                    borderColor={
+                      selectedImageIndex === index ? "blue.500" : "gray.200"
+                    }
                     onClick={() => setSelectedImageIndex(index)}
                     _hover={{ opacity: 0.8, shadow: "md" }}
-                    
                   />
                 ))}
               </HStack>
@@ -200,14 +253,20 @@ export const ProductDetail = () => {
                   {currentPrice.toFixed(2)} {product.currency}
                 </Text>
                 {hasDiscount && (
-                  <Text fontSize="xl" color="gray.500" textDecoration="line-through">
+                  <Text
+                    fontSize="xl"
+                    color="gray.500"
+                    textDecoration="line-through"
+                  >
                     {product.compareAtPrice?.toFixed(2)} {product.currency}
                   </Text>
                 )}
               </HStack>
               {hasDiscount && (
                 <Text color="green.600" fontSize="sm" mt={1}>
-                  Vous économisez {((product.compareAtPrice! - currentPrice)).toFixed(2)} {product.currency}
+                  Vous économisez{" "}
+                  {(product.compareAtPrice! - currentPrice).toFixed(2)}{" "}
+                  {product.currency}
                 </Text>
               )}
             </Box>
@@ -229,8 +288,12 @@ export const ProductDetail = () => {
                   {product.variants.map((variant) => (
                     <Button
                       key={variant.id}
-                      variant={selectedVariant?.id === variant.id ? "solid" : "outline"}
-                      colorScheme={selectedVariant?.id === variant.id ? "blue" : "gray"}
+                      variant={
+                        selectedVariant?.id === variant.id ? "solid" : "outline"
+                      }
+                      colorScheme={
+                        selectedVariant?.id === variant.id ? "blue" : "gray"
+                      }
                       size="sm"
                       onClick={() => setSelectedVariant(variant)}
                       shadow="md"
@@ -258,25 +321,38 @@ export const ProductDetail = () => {
                     size="sm"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
-                    color='black'
+                    color="black"
                   >
                     <FaMinus />
                   </IconButton>
                   <Text minW="40px" textAlign="center" fontWeight="medium">
-                    <Input type="number" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} border="none" shadow="md" />
+                    <Input
+                      type="number"
+                      value={quantity}
+                      onChange={(e) => setQuantity(Number(e.target.value))}
+                      border="none"
+                      shadow="md"
+                    />
                   </Text>
                   <IconButton
                     aria-label="Augmenter quantité"
                     size="sm"
-                    onClick={() => setQuantity(Math.min(currentStock, quantity + 1))}
+                    onClick={() =>
+                      setQuantity(Math.min(currentStock, quantity + 1))
+                    }
                     disabled={quantity >= currentStock}
-                    color='black'
+                    color="black"
                   >
                     <FaPlus />
                   </IconButton>
                 </HStack>
-                <Text color={currentStock > 0 ? "green.600" : "red.600"} fontSize="sm">
-                  {currentStock > 0 ? `${currentStock} en stock` : "Rupture de stock"}
+                <Text
+                  color={currentStock > 0 ? "green.600" : "red.600"}
+                  fontSize="sm"
+                >
+                  {currentStock > 0
+                    ? `${currentStock} en stock`
+                    : "Rupture de stock"}
                 </Text>
               </HStack>
             </Box>
@@ -305,15 +381,15 @@ export const ProductDetail = () => {
                   size="lg"
                   flex="1"
                   onClick={handleAddToCart}
+                  loading={loading}
                   disabled={currentStock === 0}
                   bg="blue.500"
-                  shadow= "md"
+                  shadow="md"
                   _hover={{
                     bg: "blue.600",
-                    
                   }}
                 >
-                  <FaShoppingCart style={{ marginRight: '8px' }} />
+                  <FaShoppingCart style={{ marginRight: "8px" }} />
                   Ajouter au panier
                 </Button>
                 <IconButton
@@ -322,7 +398,7 @@ export const ProductDetail = () => {
                   variant="outline"
                   onClick={handleAddToWishlist}
                   border="none"
-                  color='red.500'
+                  color="red.500"
                   shadow="md"
                   bg="none"
                   _hover={{
@@ -340,11 +416,10 @@ export const ProductDetail = () => {
                   bg="blue.500"
                   shadow="md"
                   border="none"
-                    _hover={{
-                      bg: "blue.600",
-                      color: "white",
-                    }}
-                  
+                  _hover={{
+                    bg: "blue.600",
+                    color: "white",
+                  }}
                 >
                   <FaShare />
                 </IconButton>
@@ -357,7 +432,8 @@ export const ProductDetail = () => {
                 SKU: {product.sku}
               </Text>
               <Text fontSize="sm" color="gray.600">
-                Ajouté le: {new Date(product.createdAt).toLocaleDateString('fr-FR')}
+                Ajouté le:{" "}
+                {new Date(product.createdAt).toLocaleDateString("fr-FR")}
               </Text>
             </Box>
           </VStack>
@@ -373,7 +449,13 @@ export const ProductDetail = () => {
           </Heading>
           <VStack gap={6}>
             {reviews.map((review) => (
-              <Box key={review.id} p={6} border="1px solid" borderColor="gray.200" borderRadius="md">
+              <Box
+                key={review.id}
+                p={6}
+                border="1px solid"
+                borderColor="gray.200"
+                borderRadius="md"
+              >
                 <VStack align="start" gap={3}>
                   <HStack justify="space-between" w="full">
                     <Text fontWeight="medium">{review.title}</Text>
@@ -392,7 +474,7 @@ export const ProductDetail = () => {
                     {review.body}
                   </Text>
                   <Text fontSize="xs" color="gray.500">
-                    {new Date(review.createdAt).toLocaleDateString('fr-FR')}
+                    {new Date(review.createdAt).toLocaleDateString("fr-FR")}
                   </Text>
                 </VStack>
               </Box>

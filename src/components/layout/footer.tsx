@@ -100,7 +100,7 @@ export const FooterLayourt = () => {
               md: "repeat(2, 1fr)",
               lg: "repeat(4, 1fr)",
             }}
-            gap={8}
+            gap={{base: "5", md: "6"}}
           >
             {/* À propos */}
             <VStack align="start" gap={4}>

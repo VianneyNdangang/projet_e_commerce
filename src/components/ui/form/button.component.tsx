@@ -4,25 +4,53 @@ import { Button } from "@chakra-ui/react";
 type Props = {
   icon?: React.ReactNode;
   label: string;
-  //   variant?: "solid" | "outline" | "ghost" | "link" | "unstyled";
+  w?: "full";
   size: "sm" | "md" | "lg";
   color: "blue.500" | "red.500" | "green.500" | "white" | "black";
-  bg: "blue.500" | "red.500" | "green.500" | "orange.500" | "white" | "black";
+  bg:
+    | "blue.500"
+    | "blue.600"
+    | "red.500"
+    | "green.500"
+    | "orange.500"
+    | "white"
+    | "black"
+    | "gray.100"
+    | "gray.200";
   isLoading?: boolean;
-  shadow?: "md" | "lg" | "xl";
+  shadow?: "md" | "sm" | "xl" | "lg";
   type: "button" | "submit" | "reset";
+  bg_H?:
+    | "blue.500"
+    | "blue.600"
+    | "red.500"
+    | "green.500"
+    | "orange.500"
+    | "white"
+    | "black"
+    | "gray.100"
+    | "gray.200";
+  color_H?: "blue.500" | "red.500" | "green.500" | "white" | "black";
+  shadow_h?: "md" | "sm" | "xl" | "lg";
+  disabled?: boolean;
+  onClick?: () => void;
 };
 
 export const CustomButton = ({
   icon,
   label,
-  //   variant,
+  w,
   size,
   color,
   bg,
   isLoading,
   shadow,
+  shadow_h,
+  color_H,
+  disabled,
+  bg_H,
   type,
+  onClick,
 }: Props) => {
   return (
     <>
@@ -31,12 +59,24 @@ export const CustomButton = ({
         bg={bg}
         shadow={shadow}
         loading={isLoading}
+        w={w}
+        onClick={onClick}
         type={type}
         size={size}
         variant={"plain"}
+        disabled={disabled}
+        _hover={{
+          transform: "translateY(-2px)",
+          shadow: shadow_h,
+          color: color_H,
+          bg: bg_H,
+        }}
+        _focus={{
+          outline: 'none'
+        }}
       >
         {icon}
-      {label}
+        {label}
       </Button>
       {/* <Button colorPalette="teal" variant="outline">
         Call us <RiArrowRightLine />

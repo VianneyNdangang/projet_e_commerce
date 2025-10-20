@@ -41,12 +41,7 @@ export interface Review {
   createdAt: string;
 }
 
-export interface CartItem {
-  productId: number;
-  variantId?: string;
-  quantity: number;
-  unitPrice: number;
-}
+
 
 export interface Order {
   id: number;
@@ -105,3 +100,21 @@ export interface StoreSettings {
   taxRatePercent: number;
   supportEmail: string;
 }
+
+export interface CartItem {
+  id: string;
+  productId: number;
+  variantId?: string;
+  title: string;
+  price: number;
+  quantity: number;
+  image: string;
+  stock: number;
+}
+
+//export interface CartItem {
+//   productId: number;
+//   variantId?: string;
+//   quantity: number;
+//   unitPrice: number;
+// }
