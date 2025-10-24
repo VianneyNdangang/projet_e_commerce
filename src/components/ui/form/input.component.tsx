@@ -1,4 +1,4 @@
-import { Field, Input, InputGroup, NumberInput } from "@chakra-ui/react";
+import { Button, Field, Input, InputGroup, NumberInput } from "@chakra-ui/react";
 import { PasswordInput } from "../password-input";
 // import { LuUser } from "react-icons/lu";
 import type { ReactNode } from "react";
@@ -9,7 +9,7 @@ type Props = {
   placeholder: string;
   value?: string;
   icon?: ReactNode;
-  label: string
+  label?: string
   type:
     | "text"
     | "number"
@@ -23,9 +23,9 @@ type Props = {
     | "datetime-local"
     | "month"
     | "week";
-  size: "sm" | "md" | "lg";
+  size: "sm" | "md" | "lg" |"xs";
   variant?: "outline" | "filled" | "unstyled";
-  isDisabled: boolean;
+  isDisabled?: boolean;
 };
 
 export const CustomInput = ({
@@ -46,7 +46,7 @@ export const CustomInput = ({
   //     resolver: standardSchemaResolver(formSchema),
   //   })
   return (
-    <Field.Root invalid>
+    <Field.Root >
       <Field.Label>{label}</Field.Label>
       <div>
         {type === "password" ? (
@@ -63,16 +63,18 @@ export const CustomInput = ({
             <Input
             bg={"gray.100"}
               placeholder={placeholder}
+              color={"gray.800"}
               value={value}
               disabled={isDisabled}
               type={type}
               size={size}
-              // variant={variant}
+              variant= "outline"
             />
           </InputGroup>
+          
         )}
       </div>
-      <Field.ErrorText>This field is required</Field.ErrorText>
+      {/* <Field.ErrorText>This field is required</Field.ErrorText> */}
     </Field.Root>
   );
 };

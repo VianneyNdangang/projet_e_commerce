@@ -1,22 +1,22 @@
 {
   "categories": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Électronique",
       "slug": "electronique"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Maison & Cuisine",
       "slug": "maison-cuisine"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Mode",
       "slug": "mode"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Beauté",
       "slug": "beaute"
     }
@@ -226,7 +226,7 @@
       "createdAt": "2024-06-05T09:45:00Z"
     },
     {
-      "id": 107,
+      "id": "107",
       "title": "Sac à Dos Urbain 20L",
       "slug": "sac-a-dos-urbain-20l",
       "description": "Sac à dos résistant à l'eau, poche laptop 15\", sangle poitrine.",
@@ -301,17 +301,18 @@
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "firstName": "Alice",
       "lastName": "Moreau",
       "email": "alice.moreau@example.com",
       "password": "password123",
       "phone": "+33 6 12 34 56 78",
       "createdAt": "2024-07-10T15:00:00Z",
-      "isAdmin": false
+      "isAdmin": false,
+      "carts": []
     },
     {
-      "id": 2,
+      "id": "2",
       "firstName": "Marc",
       "lastName": "Leroy",
       "email": "marc.leroy@example.com",
@@ -321,29 +322,31 @@
       "isAdmin": true
     },
     {
-      "id": 3,
+      "id": "3",
       "firstName": "Sophie",
       "lastName": "Durand",
       "email": "sophie.durand@example.com",
       "password": "sophiepwd",
       "phone": null,
       "createdAt": "2025-03-02T10:05:00Z",
-      "isAdmin": false
+      "isAdmin": false,
+      "carts": []
     },
     {
-      "id": 4,
+      "id": "4",
       "firstName": "Test",
       "lastName": "Client",
       "email": "client.test@example.com",
       "password": "test",
       "phone": null,
       "createdAt": "2025-04-15T08:00:00Z",
-      "isAdmin": false
+      "isAdmin": false,
+      "carts": []
     }
   ],
   "addresses": [
     {
-      "id": 1,
+      "id": "1",
       "userId": 1,
       "label": "Domicile",
       "street": "12 rue Victor Hugo",
@@ -353,7 +356,7 @@
       "createdAt": "2024-07-10T15:10:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "userId": 2,
       "label": "Bureau",
       "street": "5 avenue des Champs",
@@ -363,7 +366,7 @@
       "createdAt": "2024-08-02T08:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "userId": 3,
       "label": "Appartement",
       "street": "48 route de Nantes",
@@ -375,7 +378,7 @@
   ],
   "orders": [
     {
-      "id": 5001,
+      "id": "5001",
       "userId": 1,
       "items": [
         {
@@ -408,7 +411,7 @@
       "deliveredAt": "2025-03-27T14:00:00Z"
     },
     {
-      "id": 5002,
+      "id": "5002",
       "userId": 3,
       "items": [
         {
@@ -441,7 +444,7 @@
       "shippedAt": "2025-05-02T16:00:00Z"
     },
     {
-      "id": 5003,
+      "id": "5003",
       "userId": 4,
       "items": [
         {
@@ -466,7 +469,7 @@
       "placedAt": "2025-06-18T11:00:00Z"
     },
     {
-      "id": 5004,
+      "id": "5004",
       "userId": 2,
       "items": [
         {
@@ -499,7 +502,7 @@
       "deliveredAt": "2025-02-25T10:30:00Z"
     },
     {
-      "id": 5005,
+      "id": "5005",
       "userId": 1,
       "items": [
         {
@@ -527,7 +530,7 @@
   ],
   "reviews": [
     {
-      "id": 9001,
+      "id": "9001",
       "productId": 101,
       "userId": 1,
       "rating": 5,
@@ -536,7 +539,7 @@
       "createdAt": "2025-03-25T12:00:00Z"
     },
     {
-      "id": 9002,
+      "id": "9002",
       "productId": 106,
       "userId": 2,
       "rating": 5,
@@ -545,7 +548,7 @@
       "createdAt": "2024-07-12T08:30:00Z"
     },
     {
-      "id": 9003,
+      "id": "9003",
       "productId": 103,
       "userId": 3,
       "rating": 4,
@@ -554,7 +557,7 @@
       "createdAt": "2025-05-03T11:20:00Z"
     },
     {
-      "id": 9004,
+      "id": "9004",
       "productId": 105,
       "userId": 1,
       "rating": 4,
@@ -563,7 +566,7 @@
       "createdAt": "2024-10-10T09:00:00Z"
     },
     {
-      "id": 9005,
+      "id": "9005",
       "productId": 104,
       "userId": 4,
       "rating": 3,
@@ -572,7 +575,7 @@
       "createdAt": "2025-01-20T17:45:00Z"
     },
     {
-      "id": 9006,
+      "id": "9006",
       "productId": 107,
       "userId": 2,
       "rating": 5,
@@ -581,9 +584,38 @@
       "createdAt": "2025-02-22T08:05:00Z"
     }
   ],
+  "home": {
+    "images": [],
+    "title": "Bienvenue sur [Nom du site]",
+    "title_2": "Trouvez tout ce dont vous avez besoin au meilleur prix !",
+    "message": "Livraison rapide • Paiement sécurisé • Satisfait ou remboursé",
+    "description": ""
+  },
+  "partner": [
+    {
+      "name": "MTN Cameroun",
+      "logo": "📱"
+    },
+    {
+      "name": "Orange Cameroun",
+      "logo": "🍊"
+    },
+    {
+      "name": "CCA Bank",
+      "logo": "🏦"
+    },
+    {
+      "name": "Express Union",
+      "logo": "💳"
+    },
+    {
+      "name": "UBA Bank",
+      "logo": "🏛️"
+    }
+  ],
   "coupons": [
     {
-      "id": 1,
+      "id": "1",
       "code": "WELCOME10",
       "type": "percent",
       "value": 10,
@@ -591,7 +623,7 @@
       "expiresAt": "2026-01-01T00:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "code": "FREESHIP",
       "type": "free_shipping",
       "value": 0,
@@ -605,22 +637,10 @@
     "taxRatePercent": 20,
     "supportEmail": "support@demoshop.example"
   },
-  "carts": [
-    {
-      "userId": 1,
-      "id": "2",
-      "productId": 106,
-      "title": "Chargeur Rapide USB-C 30W",
-      "price": 17.5,
-      "quantity": 2,
-      "image": "https://placehold.co/300x200/png/ffffff/000000?text=Chargeur+30W",
-      "stock": 300,
-      "updatedAt": "2025-06-20T10:00:00Z"
-    }
-  ],
+  "carts": [],
   "categoriesProducts": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Électronique",
       "slug": "electronique",
       "products": [
@@ -639,7 +659,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Maison & Cuisine",
       "slug": "maison-cuisine",
       "products": [
@@ -664,7 +684,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Mode",
       "slug": "mode",
       "products": [
@@ -683,7 +703,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Beauté",
       "slug": "beaute",
       "products": [
@@ -698,7 +718,7 @@
   ],
   "bestSellersByCategory": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Électronique",
       "slug": "electronique",
       "bestSellers": [
@@ -720,7 +740,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Maison & Cuisine",
       "slug": "maison-cuisine",
       "bestSellers": [
@@ -743,7 +763,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Mode",
       "slug": "mode",
       "bestSellers": [
@@ -766,7 +786,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Beauté",
       "slug": "beaute",
       "bestSellers": [

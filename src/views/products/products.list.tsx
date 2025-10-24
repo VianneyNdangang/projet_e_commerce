@@ -7,7 +7,7 @@ export const ListProduct = () => {
   const [data, setDatas] = useState<any[]>([]);
    const items = () => {
       return instance({
-        url: 'categoriesProducts',
+        url: 'products',
         method: 'get',
       });
     };
@@ -20,7 +20,6 @@ export const ListProduct = () => {
       };
       load();
     }, []);
-    console.log("datadata",data)
   return (
     <>
       <Box fontFamily={'cursive'} fontSize={'2xl'} fontWeight={'black'} p={2}>

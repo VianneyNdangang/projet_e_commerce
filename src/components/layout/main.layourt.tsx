@@ -5,20 +5,18 @@ import { FooterLayourt } from "./footer";
 
 const MainLayout = () => {
   const location = useLocation();
-  console.log("locationlocation", location.pathname);
 
   const SpecificPages: string[] = ["/bascket", "/acount", "/checkout"];
+  const existing = SpecificPages.find((element) => element == location.pathname)
   return (
-    <Box minH="100vh">
-      <div>
+    <Box  overflow={"hidden"} w={{xl:"99.02vw", base:"100vw"}} bg={"bg.muted"} minH='100vh'>
         <HeaderLayourt />
-        <Stack bg={"bg.muted"} justifyContent={"center"} w={"100vw"}>
-          <Box as="main" ml={{ base: 0 }} pt="65px">
-            <Outlet />
+        <Stack justifyContent={"center"} >
+          <Box pt="65px" >
+            <Outlet/>
           </Box>
         </Stack>
-        {SpecificPages.find((element) => element == location.pathname) ?? <FooterLayourt />}
-      </div>
+        { !existing? <FooterLayourt />: ""}
     </Box>
   );
 };

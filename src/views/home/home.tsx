@@ -21,7 +21,6 @@ export const Home = () => {
     };
     load();
   }, []);
-  console.log("datadata",data)
   return (
     <Stack px={{md:5, base:2}}>
     <HomeProductTable items={data} title={"Produits a la mode"}/>

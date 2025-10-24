@@ -26,10 +26,13 @@ import {
   FaMinus,
   FaPlus,
 } from "react-icons/fa";
+import { BiCart } from "react-icons/bi";
 import type { Product, ProductVariant, Review } from "@/types/product.types";
+import { AddToCart } from "@/handler/product.handler";
+import { notify, Toasters } from "@/components/layout/ui/shared/toaster.shared";
 
 export const ProductDetail = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -72,26 +75,27 @@ export const ProductDetail = () => {
     }
   }, [id]);
 
-  const Add = async (data: any) => {
-      const request = await instance.post(`carts`, {
-        userId: 1,
-        productId: data?.id,
-        title: data?.title,
-        price: data?.price,
-        quantity: quantity,
-        image: data?.images[0],
-        stock: data?.stock,
-      });
-      if (request.status == 200) {
-        alert(`${product?.title} a été ajouté au panier`);
-      }
-  };
+  
+  // const Add = async (data: any) => {
+  //   const request = await instance.post(`carts`, {
+  //     userId: 1,
+  //     productId: data?.id,
+  //     title: data?.title,
+  //     price: data?.price,
+  //     quantity: quantity,
+  //     image: data?.images[0],
+  //     stock: data?.stock,
+  //   });
+  //   if (request.status == 200) {
+  //     alert(`${product?.title} a été ajouté au panier`);
+  //   }
+  // };
 
   const handleAddToCart = () => {
     try {
-      setLoading(true)
-      Add(product);
-      navigate(-1)
+      // setLoading(true);
+      AddToCart(product, quantity);
+      notify( 'success', "Le produit a ete ajoute au panier")
     } catch (error) {
       console.log(error);
     }
@@ -144,6 +148,8 @@ export const ProductDetail = () => {
     : 0;
 
   return (
+    <>
+    <Toasters />
     <Container w={"full"} py={8}>
       <Grid
         templateColumns={{ base: "1fr", lg: "1fr 1fr" }}
@@ -322,6 +328,7 @@ export const ProductDetail = () => {
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
                     color="black"
+                    _focus={{ outline: "none" }}
                   >
                     <FaMinus />
                   </IconButton>
@@ -332,11 +339,14 @@ export const ProductDetail = () => {
                       onChange={(e) => setQuantity(Number(e.target.value))}
                       border="none"
                       shadow="md"
+                      minLength={1}
+                      maxLength={currentStock}
                     />
                   </Text>
                   <IconButton
                     aria-label="Augmenter quantité"
                     size="sm"
+                    _focus={{ outline: "none" }}
                     onClick={() =>
                       setQuantity(Math.min(currentStock, quantity + 1))
                     }
@@ -376,8 +386,20 @@ export const ProductDetail = () => {
             {/* Actions */}
             <VStack gap={4}>
               <HStack gap={4}>
+                <IconButton
+                  aria-label="Open menu"
+                  display={{ base: "flex", md: "none" }}
+                  onClick={handleAddToCart}
+                  bg={"none"}
+                  variant="ghost"
+                  color="black"
+                  _focus={{ outline: "none" }}
+                >
+                  <BiCart size={24} />
+                </IconButton>
                 <Button
                   colorScheme="blue"
+                  display={{ base: "none", md: "flex" }}
                   size="lg"
                   flex="1"
                   onClick={handleAddToCart}
@@ -385,6 +407,7 @@ export const ProductDetail = () => {
                   disabled={currentStock === 0}
                   bg="blue.500"
                   shadow="md"
+                  _focus={{ outline: "none" }}
                   _hover={{
                     bg: "blue.600",
                   }}
@@ -401,6 +424,7 @@ export const ProductDetail = () => {
                   color="red.500"
                   shadow="md"
                   bg="none"
+                  _focus={{ outline: "none" }}
                   _hover={{
                     bg: "gray.100",
                   }}
@@ -416,6 +440,7 @@ export const ProductDetail = () => {
                   bg="blue.500"
                   shadow="md"
                   border="none"
+                  _focus={{ outline: "none" }}
                   _hover={{
                     bg: "blue.600",
                     color: "white",
@@ -427,12 +452,12 @@ export const ProductDetail = () => {
             </VStack>
 
             {/* Informations supplémentaires */}
-            <Box rounded="md" p={4} shadow="md">
+            <Box rounded="md" p={4}>
               <Text fontSize="sm" color="gray.600">
                 SKU: {product.sku}
               </Text>
               <Text fontSize="sm" color="gray.600">
-                Ajouté le:{" "}
+                Ajouté le:
                 {new Date(product.createdAt).toLocaleDateString("fr-FR")}
               </Text>
             </Box>
@@ -482,6 +507,6 @@ export const ProductDetail = () => {
           </VStack>
         </Box>
       )}
-    </Container>
+    </Container></>
   );
 };

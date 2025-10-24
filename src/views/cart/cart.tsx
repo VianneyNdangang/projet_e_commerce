@@ -14,6 +14,8 @@ import {
   VStack,
   Badge,
   Input,
+  Spinner,
+  EmptyState,
 } from "@chakra-ui/react";
 import {
   FaTrash,
@@ -26,6 +28,7 @@ import { useNavigate } from "react-router";
 import type { CartItem } from "@/types/product.types";
 import { instance } from "@/helpers/api";
 import { CustomButton } from "@/components/ui/form/button.component";
+import { LuShoppingCart } from "react-icons/lu";
 
 export const Cart = () => {
   const navigate = useNavigate();
@@ -73,7 +76,6 @@ export const Cart = () => {
 
   const del = async (id: string) => {
     const request = await instance.delete(`carts/${id}`);
-    console.log("responseresponse", request.status);
     if (request.status == 200) {
       setCartItems((prev) => prev.filter((item) => item.id !== id));
     }
@@ -87,23 +89,23 @@ export const Cart = () => {
     }
   };
 
-  const applyCoupon = async() => {
+  const applyCoupon = async () => {
     if (!couponCode.trim()) return;
-    const validCoupons: any[] = []
+    const validCoupons: any[] = [];
     // Simulation de l'application d'un coupon
-    const items = await instance.get(`coupons`)
+    const items = await instance.get(`coupons`);
     items?.data.forEach((element: any) => {
       validCoupons.push(element.code);
     });
     if (validCoupons.includes(couponCode.toUpperCase())) {
-      const item = items?.data.find((element:any) => element.code = couponCode.toUpperCase())
-      console.log("itemitemitem",item)
+      const item = items?.data.find(
+        (element: any) => (element.code = couponCode.toUpperCase())
+      );
       setAppliedCoupon({
         code: item?.code,
         type: item?.type,
         value: item?.value,
       });
-      console.log("appliedCouponappliedCoupon",appliedCoupon)
       alert(`Coupon ${couponCode.toUpperCase()} appliqué avec succès !`);
     } else {
       alert("Code coupon invalide");
@@ -150,6 +152,7 @@ export const Cart = () => {
     return (
       <Container maxW="7xl" py={8}>
         <VStack gap={8}>
+          <Spinner size={"xl"} color={"blue"} />
           <Heading size="xl" textAlign="center">
             Chargement du panier...
           </Heading>
@@ -160,30 +163,30 @@ export const Cart = () => {
 
   if (cartItems.length === 0) {
     return (
-      <Container w={"full"} py={8}>
-        <VStack gap={8} textAlign="center" w={"full"}>
-          <Box>
-            <FaShoppingBag size={64} color="#CBD5E0" />
-          </Box>
-          <Heading size="xl" color="gray.500">
-            Votre panier est vide
-          </Heading>
-          <Text color="gray.400" fontSize="lg">
+      <EmptyState.Root size={"lg"} w={"full"}>
+        <EmptyState.Content>
+          <EmptyState.Indicator>
+            <LuShoppingCart />
+          </EmptyState.Indicator>
+          <VStack textAlign="center" gap={6}>
+            <EmptyState.Title> Votre panier est vide</EmptyState.Title>
+            <EmptyState.Description>
             Découvrez nos produits et ajoutez-les à votre panier
-          </Text>
-          <Button
-            colorScheme="blue"
-            size="lg"
-            onClick={() => navigate("/articles")}
-            _hover={{
-              transform: "translateY(-2px)",
-              shadow: "lg",
-            }}
-          >
-            Découvrir nos produits
-          </Button>
-        </VStack>
-      </Container>
+            </EmptyState.Description>
+            <CustomButton
+              label={" Découvrir nos produits"}
+              size={"sm"}
+              onClick={() => navigate("/articles")}
+              color={"black"}
+              bg={"gray.200"}
+              type={"button"}
+              bg_H="blue.600"
+              shadow_h="lg"
+              color_H="white"
+            />
+          </VStack>
+        </EmptyState.Content>
+      </EmptyState.Root>
     );
   }
 

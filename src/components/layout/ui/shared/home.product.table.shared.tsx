@@ -7,7 +7,6 @@ import {
   Grid,
   IconButton,
   Image,
-  Presence,
   RatingGroup,
   Spinner,
   Stack,
@@ -17,8 +16,9 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { MdStackedBarChart } from 'react-icons/md';
 import { useNavigate } from 'react-router';
+import { MenuComponent } from './menu.shared';
+import { FiGrid } from 'react-icons/fi';
 
 type Props = {
   items?: any[];
@@ -26,6 +26,14 @@ type Props = {
 };
 
 export const HomeProductTable = ({ items, title }: Props) => {
+  const categories: any[] = [];
+  items?.forEach(item => {
+  const exist = categories.find((element => element.id == item.id))
+  if(!exist){
+    categories.push({label: item.name, value: item.id})
+  }
+})
+console.log("categoriescategories",categories)
   const { open, onToggle } = useDisclosure();
   const navigate = useNavigate();
   return (
@@ -53,48 +61,8 @@ export const HomeProductTable = ({ items, title }: Props) => {
                 p={{ base: '1', md: '2' }}
               >
                 <Tabs.List bg={'white'}>
-                  <IconButton
-                    aria-label="Open title"
-                    display={{ base: 'flex', md: 'none' }}
-                    onClick={onToggle}
-                    bg={'none'}
-                    variant="ghost"
-                    color="black"
-                    _focus={{ outline: 'none' }}
-                  >
-                    <MdStackedBarChart />
-                  </IconButton>
-                  <Stack gap="4">
-                    <Presence
-                      present={open}
-                      animationStyle={{
-                        _open: 'scale-fade-in',
-                        _closed: 'scale-fade-out',
-                      }}
-                      animationDuration="moderate"
-                    >
-                      <Grid
-                        templateColumns={{
-                          base: `repeat(2, 1fr)`,
-                          sm: `repeat(3, 1fr)`,
-                        }}
-                        gap={2}
-                      >
-                        {items.map((item, index) => (
-                          <Tabs.Trigger
-                            key={index}
-                            value={item?.id}
-                            bg={'white'}
-                            m={'0.5'}
-                            _focus={{ outline: 'none' }}
-                            border={'none'}
-                          >
-                            {item?.name}
-                          </Tabs.Trigger>
-                        ))}
-                      </Grid>
-                    </Presence>
-                  </Stack>
+                  <Box display={{ base: 'flex', md: 'none' }} _focus={{ outline: 'none', border:"none"}}>
+                   <MenuComponent label={<FiGrid/>} menuItems={categories}/></Box>
                   {items.map((item, index) => (
                     <Tabs.Trigger
                       display={{ base: 'none', md: 'flex' }}

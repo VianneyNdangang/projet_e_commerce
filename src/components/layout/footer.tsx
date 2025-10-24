@@ -25,9 +25,13 @@ import {
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
-  FaArrowUp
+  FaArrowUp,
+  FaTiktok
 } from "react-icons/fa";
 import { CustomButton } from "../ui/form/button.component";
+import { instance } from "@/helpers/api";
+import { useEffect, useState } from "react";
+import { FiMail } from "react-icons/fi";
 
 const marquee = keyframes`
   0% { transform: translateX(100%); }
@@ -38,14 +42,14 @@ export const FooterLayourt = () => {
   const { ROUTES } = useMenuRoutes();
   const description: string =
     "Boutique de vêtements moderne qui propose des collections tendance pour hommes, femmes et enfants. Nous allions style, qualité et accessibilité pour répondre à tous les goûts.";
-  
-  const partner = [
-    { name: "MTN Cameroun", logo: "📱" },
-    { name: "Orange Cameroun", logo: "🍊" },
-    { name: "CCA Bank", logo: "🏦" },
-    { name: "Express Union", logo: "💳" },
-    { name: "UBA Bank", logo: "🏛️" },
-  ];
+  const [partner, setPartner] = useState <any[]>()
+  useEffect(() => {
+  const handlerpartners = async () =>{
+    const items = await instance.get(`partner`)
+    setPartner(items.data)
+  }
+  handlerpartners();
+},[])
 
   const socialLinks = [
     { icon: FaFacebook, href: "#", label: "Facebook" },
@@ -53,6 +57,7 @@ export const FooterLayourt = () => {
     { icon: FaInstagram, href: "#", label: "Instagram" },
     { icon: FaLinkedin, href: "#", label: "LinkedIn" },
     { icon: FaYoutube, href: "#", label: "YouTube" },
+    { icon: FaTiktok, href: "#", label: "Tiktok" },
   ];
 
   const scrollToTop = () => {
@@ -60,10 +65,10 @@ export const FooterLayourt = () => {
   };
 
   return (
-    <>
+    <Box  w={"100%"}>
       {/* Section Partenaires */}
       <Box bg="gray.50" py={8} borderTop="1px solid" borderColor="gray.200">
-        <Container maxW="7xl">
+        <Container w={"full"}>
           <VStack gap={6}>
             <Heading size="lg" color="gray.700" textAlign="center">
               Nos Partenaires
@@ -75,7 +80,7 @@ export const FooterLayourt = () => {
                 whiteSpace="nowrap"
                 py={4}
               >
-                {[...partner, ...partner].map((p, index) => (
+                {partner?.map((p, index) => (
                   <Box key={index} minW="200px" textAlign="center">
                     <HStack gap={3} justify="center">
                       <Text fontSize="2xl">{p.logo}</Text>
@@ -92,15 +97,15 @@ export const FooterLayourt = () => {
       </Box>
 
       {/* Footer Principal */}
-      <Box bg="gray.900" color="white">
-        <Container maxW="7xl" py={16}>
+      <Box bg="gray.900" color="white" w={"full"}>
+        <Container w={"full"} py={16}>
           <Grid
             templateColumns={{
               base: "1fr",
               md: "repeat(2, 1fr)",
               lg: "repeat(4, 1fr)",
             }}
-            gap={{base: "5", md: "6"}}
+            gap={"5"}
           >
             {/* À propos */}
             <VStack align="start" gap={4}>
@@ -109,9 +114,9 @@ export const FooterLayourt = () => {
               </Heading>
               <Separator borderColor="blue.400" size="lg" />
               <Stack w={"full"} pr={"2.5"}>
-              <Text color="gray.300" lineHeight="tall">
+              <Box color="gray.300" maxW={"95vw"}>
                 {description}
-              </Text>
+              </Box>
               </Stack>
               <HStack gap={2} mt={4}>
                 {socialLinks.map((social, index) => (
@@ -219,9 +224,10 @@ export const FooterLayourt = () => {
                   type="email"
                   size="sm"
                   isDisabled={false}
-                  label=""
+                  icon={<FiMail/>}
                 />
                 <CustomButton label={"S'abonner"} size={"sm"} color={"white"} bg={"blue.500"} type={"button"}/>
+                
                 </form>
               </VStack>
             </VStack>
@@ -229,15 +235,15 @@ export const FooterLayourt = () => {
         </Container>
 
         {/* Footer Bottom */}
-        <Box bg="gray.800" borderTop="1px solid" borderColor="gray.700" w={"full"}>
+        <Box bg="gray.800" borderTop="1px solid" borderColor="gray.700" w={"100%"} maxW={"100vw"}>
           <Container py={6} w={"full"}>
             <Flex
               justify="space-between"
               align="center"
-              direction={{ base: "row", md: "column" }}
+              direction={{ base: "column", md: "row" }}
               gap={4}
             >
-              <HStack gap={6} direction={{ base: "column", sm: "row" }}>
+              <Stack gap={6} direction={{ base: "column", md: "row" }} textAlign={"center"}>
                 <Text color="gray.400" fontSize="sm">
                   © 2025 Tchokos SARL. Tous droits réservés.
                 </Text>
@@ -252,9 +258,9 @@ export const FooterLayourt = () => {
                     Cookies
                   </Link>
                 </HStack>
-              </HStack>
+              </Stack>
 
-              <HStack gap={4} w={"full"} width={"full"}>
+              <Stack gap={4} w={"full"}  direction={{ base: "column", md: "row" }}>
                 <Text color="gray.400" fontSize="sm">
                   Fait au Cameroun
                 </Text>
@@ -276,11 +282,11 @@ export const FooterLayourt = () => {
                 >
                   <FaArrowUp />
                 </IconButton>
-              </HStack>
+              </Stack>
             </Flex>
           </Container>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };

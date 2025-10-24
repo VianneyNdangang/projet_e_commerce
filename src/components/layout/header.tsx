@@ -1,4 +1,4 @@
-import useMenuRoutes from '@/routes/menu';
+import useMenuRoutes from "@/routes/menu";
 import {
   Box,
   Drawer,
@@ -8,16 +8,20 @@ import {
   IconButton,
   Portal,
   Separator,
+  Stack,
   Strong,
   Text,
   useDisclosure,
   VStack,
-} from '@chakra-ui/react';
-import { NavLink, useNavigate } from 'react-router';
-import { FaUserCircle } from 'react-icons/fa';
-import { AiOutlineShoppingCart, AiOutlineHeart } from 'react-icons/ai';
-import { useLocation } from 'react-router';
-import { MdStackedBarChart } from 'react-icons/md';
+} from "@chakra-ui/react";
+import { NavLink, useNavigate } from "react-router";
+import { FaUserCircle } from "react-icons/fa";
+import { AiOutlineShoppingCart, AiOutlineHeart } from "react-icons/ai";
+import { useLocation } from "react-router";
+import { HiMenu } from "react-icons/hi";
+import { CustomInput } from "../ui/form/input.component";
+import { FiMail, FiSearch } from "react-icons/fi";
+import { Tooltip } from "../ui/tooltip";
 
 export const HeaderLayourt = () => {
   const { ROUTES } = useMenuRoutes();
@@ -38,7 +42,7 @@ export const HeaderLayourt = () => {
   const mobile = (
     <Drawer.Root
       open={open}
-      placement={'start'}
+      placement={"start"}
       onOpenChange={() => setOpen(false)}
     >
       <Portal>
@@ -46,12 +50,12 @@ export const HeaderLayourt = () => {
         <Drawer.Positioner>
           <Drawer.Content>
             <Drawer.Header>
-              <Drawer.Title fontSize={'xl'}>Menu</Drawer.Title>
+              <Drawer.Title fontSize={"xl"}>Menu</Drawer.Title>
             </Drawer.Header>
-            <Separator mx={"3"} bg={"black"} border={"sm"}/>
+            <Separator mx={"3"} bg={"black"} border={"sm"} />
             <Drawer.Body>
-              <VStack gap={'5'}>
-                <Box textAlign={'left'}>
+              <VStack gap={"5"}>
+                <Box textAlign={"left"}>
                   {ROUTES.map((item, index) => (
                     <Box key={index} onClick={() => setOpen(false)}>
                       <NavLink to={item.path}>
@@ -77,32 +81,33 @@ export const HeaderLayourt = () => {
       top="0"
       left="0"
       right="0"
-      bg={'whiteAlpha.900'}
-      py={'4'}
-      px={'10'}
+      bg={"whiteAlpha.900"}
+      py={"4"}
+      px={"10"}
       zIndex="overlay"
+      boxShadow={"sm"}
       color="black"
       h="16"
     >
       <Flex h="100%" alignItems="center" justifyContent="space-between">
         <IconButton
           aria-label="Open menu"
-          display={{ base: 'flex', md: 'none' }}
+          display={{ base: "flex", lg: "none" }}
           onClick={onToggle}
-          bg={'none'}
+          bg={"none"}
           variant="ghost"
           color="black"
-          _focus={{ outline: 'none' }}
+          _focus={{ outline: "none" }}
         >
-          <MdStackedBarChart />
+          <HiMenu size={24} />
         </IconButton>
-        <HStack gap={'5'}>
-          <Box onClick={() => navigate('/')} cursor={'pointer'}>
+        <HStack gap={"5"}>
+          <Box onClick={() => navigate("/")} cursor={"pointer"}>
             <Strong>Logo</Strong>
           </Box>
         </HStack>
 
-        <HStack gap={'5'} display={{ base: 'none', md: 'flex' }}>
+        <HStack gap={"5"} display={{ base: "none", lg: "flex" }}>
           {ROUTES.map((item, index) => (
             <Box key={index}>
               <NavLink to={item.path}>
@@ -113,30 +118,49 @@ export const HeaderLayourt = () => {
             </Box>
           ))}
         </HStack>
-        <HStack gap={'5'}>
-          <Icon
-            onClick={() => {
-              navigate('/acount');
-            }}
-            _hover={{ cursor: 'pointer' }}
-            color={Activeted('/acount') ? 'blue' : 'black'}
-          >
-            <FaUserCircle />
-          </Icon>
-          <Icon
-            onClick={() => navigate('/wishlist')}
-            _hover={{ cursor: 'pointer' }}
-            color={Activeted('/wishlist') ? 'blue' : 'black'}
-          >
-            <AiOutlineHeart />
-          </Icon>
-          <Icon
-            onClick={() => navigate('/bascket')}
-            _hover={{ cursor: 'pointer' }}
-            color={Activeted('/bascket') ? 'blue' : 'black'}
-          >
-            <AiOutlineShoppingCart />
-          </Icon>
+
+        <HStack gap={"5"}>
+          <Stack display={{ base: "flex", lg: "none" }}>
+            <FiSearch />
+          </Stack>
+          <HStack display={{ base: "none", lg: "flex" }}>
+            <CustomInput
+              icon={<FiSearch />}
+              placeholder={"Recheche"}
+              type={"text"}
+              size={"xs"}
+              isDisabled={false}
+            />
+          </HStack>
+          <Tooltip showArrow content="compte">
+            <Icon
+              onClick={() => {
+                navigate("/acount");
+              }}
+              _hover={{ cursor: "pointer" }}
+              color={Activeted("/acount") ? "blue" : "black"}
+            >
+              <FaUserCircle />
+            </Icon>
+          </Tooltip>
+          <Tooltip showArrow content="Favoris">
+            <Icon
+              onClick={() => navigate("/wishlist")}
+              _hover={{ cursor: "pointer" }}
+              color={Activeted("/wishlist") ? "blue" : "black"}
+            >
+              <AiOutlineHeart />
+            </Icon>
+          </Tooltip>
+          <Tooltip showArrow content="Chariot">
+            <Icon
+              onClick={() => navigate("/bascket")}
+              _hover={{ cursor: "pointer" }}
+              color={Activeted("/bascket") ? "blue" : "black"}
+            >
+              <AiOutlineShoppingCart />
+            </Icon>
+          </Tooltip>
         </HStack>
       </Flex>
     </Box>
@@ -154,17 +178,17 @@ const NavItem = ({ active, children, ...rest }: any) => {
       my={4}
       onClick={rest.onClick}
       cursor="pointer"
-      color={active ? 'blue' : 'black'}
-      borderBottom={{md:active ? '3px solid blue' : 'none', base:"none"}}
-      rounded={'none'}
-      fontFamily={'cursive'}
+      color={active ? "blue" : "black"}
+      borderBottom={{ md: active ? "3px solid blue" : "none", base: "none" }}
+      rounded={"none"}
+      fontFamily={"cursive"}
       fontWeight="semibold"
       _hover={{
-        color: active ? 'blue.600' : 'blackAlpha.600',
+        color: active ? "blue.600" : "blackAlpha.600",
       }}
       {...rest}
     >
-      <Text fontSize={{ md: 'md', base: 'lg' }}>{children}</Text>
+      <Text fontSize={{ md: "md", base: "lg" }}>{children}</Text>
     </Flex>
   );
 };
