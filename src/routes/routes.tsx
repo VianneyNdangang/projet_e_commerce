@@ -5,6 +5,8 @@ import { ProductDetail } from '@/views/products/product.detail';
 import { Cart } from '@/views/cart/cart';
 // import { Home } from '@/views/home/home';
 import { createHashRouter } from 'react-router';
+import { Contact } from '@/views/contact/contact';
+import { ListPromotionProduct } from '@/views/promotion/promotion.list';
 
 export const routers = createHashRouter(
   [
@@ -33,10 +35,6 @@ export const routers = createHashRouter(
           element: <ListProduct/>,
         },
         {
-          path: '/product/:id',
-          element: <ProductDetail/>,
-        },
-        {
           path: '/acount',
           element: <div> Compte</div>,
         },
@@ -54,7 +52,7 @@ export const routers = createHashRouter(
         },
         {
           path: '/promotion',
-          element: <div>Promotion</div>,
+          element: <ListPromotionProduct/>,
         },
         {
           path: '/news',
@@ -62,7 +60,7 @@ export const routers = createHashRouter(
         },
         {
       path: '/contact',
-      element: <div>Contact</div>,
+      element: <Contact/>,
     }
       ],
     },

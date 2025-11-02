@@ -1,7 +1,6 @@
 import {
   Badge,
   Box,
-  Button,
   Center,
   FormatNumber,
   Grid,
@@ -14,43 +13,52 @@ import {
   VStack,
   Heading,
   IconButton,
+  Separator,
+  Stack,
 } from "@chakra-ui/react";
 import { HiStar } from "react-icons/hi";
 import { FaShoppingCart, FaHeart, FaEye } from "react-icons/fa";
-import { useNavigate } from "react-router";
 import { DrawerComponent } from "./drawer.shared";
 import { FiGrid } from "react-icons/fi";
-import { instance } from "@/helpers/api";
 import { AddToCart } from "@/handler/product.handler";
+import { notify } from "./toaster.shared";
+import { ProductDetail } from "@/views/products/product.detail";
+import { useState } from "react";
+import type { ProductType } from "@/types/product.types";
+import { CustomButton } from "@/components/ui/form/button.component";
 // import { BiCart } from "react-icons/bi";
 
 type Props = {
-  items: any[];
+  items: ProductType[];
   title: string;
 };
 
 export const Table = ({ items, title }: Props) => {
-  const navigate = useNavigate();
+  const [isDetail, setIsDetail] = useState<boolean>(false);
+  const [productId, setProductId] = useState<string>([]);
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const handleProductClick = (productId: number) => {
-    navigate(`/product/${productId}`);
-  };
-
-  const handleAddToCart = (data: any) => {
+  const handleAddToCart = (data: ProductType) => {
     try {
-      AddToCart(data, 1)
+      setLoading(true);
+      AddToCart(data, "1");
+      notify("success", "Le produit a ete ajoute au panier");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-    
+    setLoading(false);
   };
 
   const handleAddToWishlist = (productTitle: string) => {
     alert(`${productTitle} ajouté aux favoris !`);
   };
 
-  const datasCategories: { id: string; name: string; product: any[] }[] = [];
-  items.forEach((elements: any) => {
+  const datasCategories: {
+    id: string;
+    name: string;
+    product: ProductType[];
+  }[] = [];
+  items?.forEach((elements: any) => {
     const existing = datasCategories.find(
       (item) => item.id == elements?.categoryId
     );
@@ -64,82 +72,92 @@ export const Table = ({ items, title }: Props) => {
       });
     }
   });
-  const defaut = `${datasCategories[0]?.id}` + ``;
+  // const defaut = `${datasCategories[0]?.id}` + ``;
   return (
-    <Box my={6} shadow={"md"}  rounded={"md"}>
-      <Box
-        bg="white"
-        p={6}
-        borderBottom="1px solid"
-        borderColor="gray.200"
-        w={"full"}
-        roundedTop={"md"}
-      >
-        <Heading
-          size="xl"
-          color="gray.800"
-          fontWeight="bold"
-          textAlign="center"
-        >
-          {title}
-        </Heading>
-      </Box>
-      <Box bg="white" p={4}  roundedBottom={"md"}>
-        <Tabs.Root variant="enclosed" defaultValue={defaut} colorPalette="blue">
-          <Tabs.List bg="gray.50" rounded="lg" p={2} gap={2}>
-            <DrawerComponent
-              placement={"top"}
-              children={
-                <HStack
-                  cursor={"pointer"}
-                  _hover={{
-                    bg: "blue.50",
-                    color: "blue.600",
-                  }}
-                >
-                  <FiGrid />
-                  categories
-                </HStack>
-              }
-              items={datasCategories?.map((item, index) => (
-                <Tabs.Trigger
-                  key={index}
-                  value={item?.id}
-                  rounded="md"
-                  px={1}
-                  py={2}
-                  color="gray.700"
-                  _selected={{
-                    bg: "blue.500",
-                    color: "white",
-                    shadow: "md",
-                  }}
-                  _hover={{
-                    bg: "blue.50",
-                    color: "blue.600",
-                  }}
-                  transition="all 0.2s ease"
-                  _focus={{ outline: "none" }}
-                  border={"none"}
-                >
-                  {item?.name}
-                </Tabs.Trigger>
-              ))}
-              title={"Categories"}
-            />
-          </Tabs.List>
-          {datasCategories?.map((item, index) => (
-            <Tabs.Content value={item?.id} key={index} p={4}>
-              <Box textAlign={"center"} pb={"10"} fontSize={"xl"}>
-                {item.name}
-              </Box>
+    <>
+      <Box my={6} shadow={"md"} rounded={"md"}>
+        <Box bg="white" p={6} w={"full"} roundedTop={"md"}>
+          <Heading
+            size="xl"
+            color="gray.800"
+            fontWeight="bold"
+            textAlign="center"
+          >
+            {title}
+          </Heading>
+        </Box>
+        <Box bg="white" p={4} roundedBottom={"md"}>
+          <Tabs.Root variant="plain" defaultValue={"1"}>
+            <Tabs.List bg="gray.50" rounded="lg" p={2} gap={2}>
+              <DrawerComponent
+                placement={"top"}
+                children={
+                  <HStack
+                    cursor={"pointer"}
+                    _hover={{
+                      bg: "blue.50",
+                      color: "blue.600",
+                    }}
+                  >
+                    <FiGrid />
+                    categories
+                  </HStack>
+                }
+                items={datasCategories?.map((item, index) => (
+                  <Tabs.Trigger
+                    key={index}
+                    value={item?.id}
+                    rounded="md"
+                    w="full"
+                    color="gray.700"
+                    _selected={{
+                      bg: "blue.500",
+                      color: "white",
+                      shadow: "md",
+                    }}
+                    _hover={{
+                      bg: "blue.50",
+                      color: "blue.600",
+                    }}
+                    transition="all 0.2s ease"
+                    _focus={{ outline: "none" }}
+                    border={"none"}
+                  >
+                    {item?.name}
+                  </Tabs.Trigger>
+                ))}
+                title={"Categories"}
+              />
+            </Tabs.List>
+            <Separator />
+            {datasCategories?.map((item, index) => (
+              <Tabs.Content
+                key={index}
+                value={item?.id}
+                _open={{
+                  animationName: "fade-in, scale-in",
+                  animationDuration: "300ms",
+                }}
+                _closed={{
+                  animationName: "fade-out, scale-out",
+                  animationDuration: "120ms",
+                }}
+              >
+                {/* <Tabs.Content value={item?.id} key={index} p={4}> */}
+                <VStack textAlign={"center"} pb={"5"} fontSize={"xl"}>
+                  {item.name}
+                  <Text fontSize={"xs"}>
+                    {item?.product?.length} produits disponibles
+                  </Text>
+                </VStack>
+                <Separator pb={4} />
 
-              <Box key={index}>
+                {/* <Box key={index}> */}
                 {item?.product ? (
                   <Grid
                     templateColumns={{
                       md: `repeat(4, 1fr)`,
-                      base: `repeat(1, 1fr)`,
+                      base: `repeat(2, 1fr)`,
                       sm: `repeat(2, 1fr)`,
                       lg: `repeat(5, 1fr)`,
                     }}
@@ -161,7 +179,6 @@ export const Table = ({ items, title }: Props) => {
                           }}
                           transition="all 0.3s ease"
                           cursor="pointer"
-                          onClick={() => handleProductClick(product.id)}
                         >
                           {/* Image Container */}
                           <Box position="relative" overflow="hidden">
@@ -175,10 +192,14 @@ export const Table = ({ items, title }: Props) => {
                                 transform: "scale(1.05)",
                               }}
                               transition="transform 0.3s ease"
+                              onClick={() => {
+                                setIsDetail(true);
+                                setProductId(product.id);
+                              }}
                             />
 
                             {/* Stock Badge */}
-                            
+
                             <Badge
                               position="absolute"
                               top={2}
@@ -247,7 +268,7 @@ export const Table = ({ items, title }: Props) => {
                                   <FormatNumber
                                     value={product.price}
                                     style="currency"
-                                    currency="EUR"
+                                    currency="XAF"
                                   />
                                 </Text>
                                 {product.compareAtPrice &&
@@ -267,76 +288,61 @@ export const Table = ({ items, title }: Props) => {
                               </HStack>
 
                               {/* Action Buttons */}
-                              <HStack gap={2} w="full">
+                              <HStack gap={2} w="full" justifyContent={"center"}>
                                 <IconButton
                                   aria-label="Open menu"
-                                  display={{ base: "flex", md: "none" }}
-                                  onClick={() => handleProductClick(product.id)
-                                  }
+                                  display={{ base: "flex", lg: "none" }}
+                                  onClick={() => handleAddToCart(product)}
                                   variant="ghost"
-                                  _hover={{
-                                    transform: "translateY(-1px)",
-                                    shadow: "md",
-                                    bg: "blue.600",
-                                    color: "white",
-                                  }}
+                                  loading={loading}
                                   _focus={{ outline: "none", border: "none" }}
-                                  bg="blue.500"
+                                  bg="black"
                                   color="white"
                                 >
-                                   <FaShoppingCart/>
+                                  <FaShoppingCart />
                                 </IconButton>
-                                <Button
-                                  size="sm"
-                                  colorScheme="blue"
-                                  display={{ base: "none", md: "flex" }}
-                                  flex="1"
-                                  onClick={() => handleAddToCart(product.id)
-                                  }
-                                  _hover={{
-                                    transform: "translateY(-1px)",
-                                    shadow: "md",
-                                    bg: "blue.600",
-                                    color: "white",
-                                  }}
-                                  _focus={{ outline: "none", border: "none" }}
-                                  bg="blue.500"
-                                  color="white"
-                                >
-                                  <FaShoppingCart
-                                    style={{ marginRight: "8px" }}
+                                <Stack w={"full"} display={{ base: "none", lg: "flex" }}>
+                                  <CustomButton
+                                    onClick={() => handleAddToCart(product)}
+                                    size="2xs"
+                                    label="Panier"
+                                    icon={
+                                      <FaShoppingCart
+                                        style={{ marginRight: "8px" }}
+                                      />
+                                    }
+                                    color={"white"}
+                                    bg={"black"}
+                                    w={"full"}
+                                    type={"button"}
+                                    bg_H="blue.600"
                                   />
-                                  Panier
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  colorScheme="red"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleAddToWishlist(product.title);
-                                  }}
-                                  _hover={{
-                                    bg: "red.50",
-                                    borderColor: "red.400",
-                                  }}
-                                >
-                                  <FaHeart />
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  colorScheme="gray"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleProductClick(product.id);
-                                  }}
-                                  _hover={{
-                                    bg: "gray.50",
-                                  }}
-                                >
-                                  <FaEye />
-                                </Button>
+                                </Stack>
+                                <CustomButton
+                                    onClick={() => {
+                                      handleAddToWishlist(product.title);}}
+                                    size={"2xs"}
+                                    icon={
+                                      <FaHeart />
+                                    }
+                                    color={"red.500"}
+                                    bg={"white"}
+                                    type={"button"}
+                                    bg_H="gray.200"
+                                  />
+                                   <CustomButton
+                                    onClick={() => {
+                                      setIsDetail(true);
+                                      setProductId(product.id);}}
+                                    size={"2xs"}
+                                    icon={
+                                      <FaEye />
+                                    }
+                                    color={"black"}
+                                    bg={"white"}
+                                    type={"button"}
+                                    bg_H="gray.200"
+                                  />
                               </HStack>
                             </VStack>
                           </Box>
@@ -354,11 +360,18 @@ export const Table = ({ items, title }: Props) => {
                     </VStack>
                   </Center>
                 )}
-              </Box>
-            </Tabs.Content>
-          ))}
-        </Tabs.Root>
+                {/* </Box> */}
+              </Tabs.Content>
+            ))}
+          </Tabs.Root>
+        </Box>
       </Box>
-    </Box>
+
+      <ProductDetail
+        id={productId}
+        open={isDetail}
+        close={() => setIsDetail(false)}
+      />
+    </>
   );
 };

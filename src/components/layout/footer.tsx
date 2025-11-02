@@ -16,22 +16,23 @@ import {
 import { keyframes } from "@emotion/react";
 import { NavLink } from "react-router";
 import { CustomInput } from "../ui/form/input.component";
-import { 
-  FaFacebook, 
-  FaTwitter, 
-  FaInstagram, 
-  FaLinkedin, 
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
   FaYoutube,
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
   FaArrowUp,
-  FaTiktok
+  FaTiktok,
 } from "react-icons/fa";
 import { CustomButton } from "../ui/form/button.component";
 import { instance } from "@/helpers/api";
 import { useEffect, useState } from "react";
 import { FiMail } from "react-icons/fi";
+import { useForm } from "react-hook-form";
 
 const marquee = keyframes`
   0% { transform: translateX(100%); }
@@ -40,16 +41,17 @@ const marquee = keyframes`
 
 export const FooterLayourt = () => {
   const { ROUTES } = useMenuRoutes();
+  const {control, handleSubmit}= useForm()
   const description: string =
     "Boutique de vêtements moderne qui propose des collections tendance pour hommes, femmes et enfants. Nous allions style, qualité et accessibilité pour répondre à tous les goûts.";
-  const [partner, setPartner] = useState <any[]>()
+  const [partner, setPartner] = useState<any[]>();
   useEffect(() => {
-  const handlerpartners = async () =>{
-    const items = await instance.get(`partner`)
-    setPartner(items.data)
-  }
-  handlerpartners();
-},[])
+    const handlerpartners = async () => {
+      const items = await instance.get(`partner`);
+      setPartner(items.data);
+    };
+    handlerpartners();
+  }, []);
 
   const socialLinks = [
     { icon: FaFacebook, href: "#", label: "Facebook" },
@@ -61,11 +63,11 @@ export const FooterLayourt = () => {
   ];
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <Box  w={"100%"}>
+    <Box w={"100%"}>
       {/* Section Partenaires */}
       <Box bg="gray.50" py={8} borderTop="1px solid" borderColor="gray.200">
         <Container w={"full"}>
@@ -114,9 +116,9 @@ export const FooterLayourt = () => {
               </Heading>
               <Separator borderColor="blue.400" size="lg" />
               <Stack w={"full"} pr={"2.5"}>
-              <Box color="gray.300" maxW={"95vw"}>
-                {description}
-              </Box>
+                <Box color="gray.300" maxW={"95vw"}>
+                  {description}
+                </Box>
               </Stack>
               <HStack gap={2} mt={4}>
                 {socialLinks.map((social, index) => (
@@ -130,7 +132,7 @@ export const FooterLayourt = () => {
                     _hover={{
                       bg: "blue.400",
                       color: "white",
-                      transform: "translateY(-2px)"
+                      transform: "translateY(-2px)",
                     }}
                     transition="all 0.2s ease"
                   >
@@ -196,7 +198,7 @@ export const FooterLayourt = () => {
                 Contact & Newsletter
               </Heading>
               <Separator borderColor="blue.400" size="lg" />
-              
+
               {/* Contact Info */}
               <VStack align="start" gap={3} mb={4}>
                 <HStack gap={3}>
@@ -218,75 +220,94 @@ export const FooterLayourt = () => {
                 <Text color="gray.300" fontSize="sm">
                   Abonnez-vous à notre newsletter
                 </Text>
-                <form>
-                <CustomInput
-                  placeholder="Votre email"
-                  type="email"
-                  size="sm"
-                  isDisabled={false}
-                  icon={<FiMail/>}
-                />
-                <CustomButton label={"S'abonner"} size={"sm"} color={"white"} bg={"blue.500"} type={"button"}/>
-                
+
+                <form onSubmit={handleSubmit()}>
+                  <Stack gap={2}>
+                    <CustomInput
+                      placeholder="Votre email"
+                      type="email"
+                      size="sm"
+                      isDisabled={false}
+                      icon={<FiMail />}
+                      control={control} 
+                      name={"email"}                    />
+                    <CustomButton
+                      label={"S'abonner"}
+                      w="full"
+                      size={"sm"}
+                      color={"white"}
+                      bg={"blue.500"}
+                      type={"button"}
+                    />
+                  </Stack>
                 </form>
               </VStack>
             </VStack>
           </Grid>
         </Container>
-
-        {/* Footer Bottom */}
-        <Box bg="gray.800" borderTop="1px solid" borderColor="gray.700" w={"100%"} maxW={"100vw"}>
-          <Container py={6} w={"full"}>
-            <Flex
-              justify="space-between"
-              align="center"
-              direction={{ base: "column", md: "row" }}
-              gap={4}
-            >
-              <Stack gap={6} direction={{ base: "column", md: "row" }} textAlign={"center"}>
-                <Text color="gray.400" fontSize="sm">
-                  © 2025 Tchokos SARL. Tous droits réservés.
-                </Text>
-                <HStack gap={4}>
-                  <Link color="gray.400" fontSize="sm" _hover={{ color: "blue.400" }}>
-                    Politique de confidentialité
-                  </Link>
-                  <Link color="gray.400" fontSize="sm" _hover={{ color: "blue.400" }}>
-                    Conditions d'utilisation
-                  </Link>
-                  <Link color="gray.400" fontSize="sm" _hover={{ color: "blue.400" }}>
-                    Cookies
-                  </Link>
-                </HStack>
-              </Stack>
-
-              <Stack gap={4} w={"full"}  direction={{ base: "column", md: "row" }}>
-                <Text color="gray.400" fontSize="sm">
-                  Fait au Cameroun
-                </Text>
-                <IconButton
-                  aria-label="Retour en haut"
-                  size="sm"
-                  border={"none"}
-                  color="blue.400"
-                  onClick={scrollToTop}
-                  _focus={{
-                    border: "none"
-                  }}
-                  _hover={{
-                    bg: "blue.400",
-                    color: "white",
-                    transform: "translateY(-2px)"
-                  }}
-                  transition="all 0.2s ease"
-                >
-                  <FaArrowUp />
-                </IconButton>
-              </Stack>
-            </Flex>
-          </Container>
-        </Box>
       </Box>
+       {/* Footer Bottom */}
+      <Box bg="gray.800" p={6}>
+          <Flex
+            justify="space-between"
+            align="center"
+            direction={{ base: "column", md: "row" }}
+            gap={4}
+            color={"yellow.500"}
+            w={"full"}
+          >
+            <Stack
+              gap={6}
+              direction={{ base: "column", md: "row" }}
+              textAlign={"center"}
+              alignItems="center"
+            >
+              <Text fontSize="sm">
+                © 2025 Tchokos SARL. Tous droits réservés.
+              </Text>
+              <HStack gap={4}>
+                <Link
+                  color="yellow.600"
+                  fontSize="sm"
+                  _hover={{ color: "blue.400" }}
+                >
+                  Politique de confidentialité
+                </Link>
+                <Link
+                  color="yellow.600"
+                  fontSize="sm"
+                  _hover={{ color: "blue.400" }}
+                >
+                  Conditions d'utilisation
+                </Link>
+              </HStack>
+            </Stack>
+
+            <Stack gap={4} w={"full"} direction={{ base: "column", md: "row" }} textAlign={"center"}>
+              <Text color="gray.400" fontSize="sm">
+                Fait au Cameroun
+              </Text>
+              <IconButton
+                aria-label="Retour en haut"
+                size="sm"
+                border={"none"}
+                color="blue.400"
+                onClick={scrollToTop}
+                _focus={{
+                  border: "none",
+                }}
+                _hover={{
+                  bg: "blue.400",
+                  color: "white",
+                  transform: "translateY(-2px)",
+                }}
+                transition="all 0.2s ease"
+              >
+                <FaArrowUp />
+              </IconButton>
+            </Stack>
+          </Flex>
+        </Box>
     </Box>
   );
 };

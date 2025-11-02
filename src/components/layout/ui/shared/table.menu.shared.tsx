@@ -9,7 +9,6 @@ type props = {
   }[];
 };
 export const MenuComponent = ({ label, menuItems }: props) => {
-  console.log("menuItemsmenuItems", menuItems);
   const [value, setValue] = useState("asc");
   return (
     <Menu.Root>

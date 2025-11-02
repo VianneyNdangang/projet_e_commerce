@@ -3,20 +3,15 @@ import { Button } from "@chakra-ui/react";
 
 type Props = {
   icon?: React.ReactNode;
-  label: string;
-  w?: "full";
-  size: "sm" | "md" | "lg";
+  label?: string;
+  w?: any;
+  size?: "sm" | "md" | "lg" |"xs"| "2xs";
   color: "blue.500" | "red.500" | "green.500" | "white" | "black";
   bg:
     | "blue.500"
-    | "blue.600"
     | "red.500"
-    | "green.500"
-    | "orange.500"
     | "white"
     | "black"
-    | "gray.100"
-    | "gray.200";
   isLoading?: boolean;
   shadow?: "md" | "sm" | "xl" | "lg";
   type: "button" | "submit" | "reset";
@@ -58,9 +53,11 @@ export const CustomButton = ({
         color={color}
         bg={bg}
         shadow={shadow}
+        rounded={"md"}
         loading={isLoading}
         w={w}
         onClick={onClick}
+        p={"4"}
         type={type}
         size={size}
         variant={"plain"}

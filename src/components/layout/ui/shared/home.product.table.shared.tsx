@@ -1,11 +1,9 @@
-// import { instance } from '@/helpers/api';
 import {
   Box,
   Center,
   Flex,
   FormatNumber,
   Grid,
-  IconButton,
   Image,
   RatingGroup,
   Spinner,
@@ -13,12 +11,12 @@ import {
   Strong,
   Tabs,
   Text,
-  useDisclosure,
   VStack,
-} from '@chakra-ui/react';
-import { useNavigate } from 'react-router';
-import { MenuComponent } from './menu.shared';
-import { FiGrid } from 'react-icons/fi';
+} from "@chakra-ui/react";
+import { MenuComponent } from "./table.menu.shared";
+import { FiGrid } from "react-icons/fi";
+import { ProductDetail } from "@/views/products/product.detail";
+import { useState } from "react";
 
 type Props = {
   items?: any[];
@@ -27,123 +25,144 @@ type Props = {
 
 export const HomeProductTable = ({ items, title }: Props) => {
   const categories: any[] = [];
-  items?.forEach(item => {
-  const exist = categories.find((element => element.id == item.id))
-  if(!exist){
-    categories.push({label: item.name, value: item.id})
-  }
-})
-console.log("categoriescategories",categories)
-  const { open, onToggle } = useDisclosure();
-  const navigate = useNavigate();
+  const[isDetail, setIsDetail] =useState<boolean>(false)
+  const[productId, setProductId] = useState<any>()
+  items?.forEach((item) => {
+    const exist = categories.find((element) => element.id == item.id);
+    if (!exist) {
+      categories.push({ label: item.name, value: item.id });
+    }
+  });
+
+  const handleDetail = (id: string)=>{
+  setIsDetail(true)
+  setProductId(id)
+ }
   return (
     <>
       <div>
-        <Stack bg={'white'} p={2} my={'5'} w={'full'}>
+        <Stack bg={"white"} p={2} my={"5"} w={"full"}>
           <Box
-            fontFamily={'cursive'}
-            fontSize={'2xl'}
-            fontWeight={'black'}
+            fontFamily={"cursive"}
+            fontSize={"2xl"}
+            fontWeight={"black"}
             p={2}
           >
             {title}
           </Box>
 
           {items ? (
-            <Flex minH={'dvh'}>
+            <Flex minH={"dvh"}>
               <Tabs.Root
-                defaultValue={items[0]?.id}
-                width={'full'}
-                colorPalette={'blue'}
-                size={'sm'}
-                justifyContent={{ sm: 'center' }}
-                bg={'gray.100'}
-                p={{ base: '1', md: '2' }}
+                defaultValue={categories[0].value}
+                width={"full"}
+                colorPalette={"blue"}
+                size={"sm"}
+                justifyContent={{ sm: "center" }}
+                p={{ base: "1", md: "2" }}
+                variant={"outline"}
               >
-                <Tabs.List bg={'white'}>
-                  <Box display={{ base: 'flex', md: 'none' }} _focus={{ outline: 'none', border:"none"}}>
-                   <MenuComponent label={<FiGrid/>} menuItems={categories}/></Box>
+                <Tabs.List bg={"white"}>
+                  <Box display={{ base: "flex", md: "none" }}>
+                    <MenuComponent label={<FiGrid />} menuItems={categories} />
+                  </Box>
                   {items.map((item, index) => (
                     <Tabs.Trigger
-                      display={{ base: 'none', md: 'flex' }}
+                      display={{ base: "none", md: "flex" }}
                       key={index}
                       value={item?.id}
-                      bg={'white'}
-                      m={'0.5'}
-                      _focus={{ outline: 'none' }}
-                      border={'none'}
+                      bg={"white"}
+                      m={"0.5"}
+                      _focus={{ outline: "none" }}
+                      border={"none"}
                     >
                       {item?.name}
                     </Tabs.Trigger>
                   ))}
                 </Tabs.List>
                 <Box>
-                  <Box pos={'relative'} minH={'200px'} width={'full'}>
+                  <Box pos={"relative"} minH={"200px"} width={"full"}>
                     {items.map((item, index) => (
                       <Tabs.Content
                         key={index}
                         value={item?.id}
-                        position={'absolute'}
-                        inset={'0'}
                         _open={{
-                          animationName: 'fade-in, scale-in',
-                          animationDuration: '300ms',
+                          animationName: "fade-in, scale-in",
+                          animationDuration: "300ms",
                         }}
                         _closed={{
-                          animationName: 'fade-out, scale-out',
-                          animationDuration: '120ms',
+                          animationName: "fade-out, scale-out",
+                          animationDuration: "120ms",
                         }}
                       >
                         {item.bestSellers ? (
-                        <Grid
-                          templateColumns={{
-                            md: `repeat(5, 1fr)`,
-                            base: `repeat(2, 1fr)`,
-                            sm: `repeat(3, 1fr)`,
-                          }}
-                          gap={{ base: '1', md: '2' }}
-                          px={{ md: 10 }}
-                        >
-                          {item.bestSellers.map((best: any, inde: any) => (
-                            <Box
-                            bg={'white'}
-                            key={inde}
-                            p={{ sm: 3, base: 1 }}
-                            rounded={'md'}
-                            onClick={()=> navigate(`product/${best.id}`)}
-                            _hover={{ boxShadow: "xl" }}
-                                  transition="box-shadow 0.3s ease"
-                            >
-                              <Image src={best.image} w={'full'} />
-                              <Strong justifyContent={'center'}>
-                                {best.title}
-                              </Strong>
-                              <Text>{best.description}</Text>
-                              <RatingGroup.Root
-                                allowHalf
-                                count={5}
-                                defaultValue={best.rating}
-                                size="sm"
-                                colorPalette={'orange'}
+                          <Grid
+                            templateColumns={{
+                              md: `repeat(5, 1fr)`,
+                              base: `repeat(2, 1fr)`,
+                              sm: `repeat(3, 1fr)`,
+                            }}
+                            gap={{ base: "1", md: "2" }}
+                            px={{ md: 10 }}
+                          >
+                            {item.bestSellers.map((best: any, inde: any) => (
+                              <Box
+                                border={"1px solid"}
+                                borderColor="gray.100"
+                                _hover={{
+                                  shadow: "lg",
+                                  transform: "translateY(-4px)",
+                                  borderColor: "blue.300",
+                                }}
+                                transition="all 0.3s ease"
+                                cursor="pointer"
+                                bg={"white"}
+                                key={inde}
+                                p={{ sm: 3, base: 1 }}
+                                rounded={"md"}
+                                onClick={() => handleDetail(best?.id)}
                               >
-                                <RatingGroup.HiddenInput />
-                                <RatingGroup.Control />
-                              </RatingGroup.Root>
-                              <Text textStyle="lg">
-                                <FormatNumber
-                                  value={best?.price}
-                                  style="currency"
-                                  currency="USD"
+                                <Image
+                                  src={best.image}
+                                  alt={best?.title}
+                                  h="200px"
+                                  w="full"
+                                  objectFit="cover"
+                                  _hover={{
+                                    transform: "scale(1.05)",
+                                  }}
+                                  transition="transform 0.3s ease"
                                 />
-                              </Text>
-                            </Box>
-                          ))}
-                        </Grid>
-                         ) : (
-                           <Box py={'5'} px={{ base: '10', md: '5' }}>
-                             <Spinner size={'xl'} color={'blue'} />
-                           </Box>
-                         )} 
+                                <Box p={4}>
+                                <Strong justifyContent={"center"}>
+                                  {best.title}
+                                </Strong></Box>
+                                <Text>{best.description}</Text>
+                                <RatingGroup.Root
+                                  allowHalf
+                                  count={5}
+                                  defaultValue={best.rating}
+                                  size="sm"
+                                  colorPalette={"orange"}
+                                >
+                                  <RatingGroup.HiddenInput />
+                                  <RatingGroup.Control />
+                                </RatingGroup.Root>
+                                <Text textStyle="lg">
+                                  <FormatNumber
+                                    value={best?.price}
+                                    style="currency"
+                                    currency="XAF"
+                                  />
+                                </Text>
+                              </Box>
+                            ))}
+                          </Grid>
+                        ) : (
+                          <Box py={"5"} px={{ base: "10", md: "5" }}>
+                            <Spinner size={"xl"} color={"blue"} />
+                          </Box>
+                        )}
                       </Tabs.Content>
                     ))}
                   </Box>
@@ -153,12 +172,17 @@ console.log("categoriescategories",categories)
           ) : (
             <Center>
               <VStack p={2}>
-                <Spinner size={'xl'} color={'blue'} />
+                <Spinner size={"xl"} color={"blue"} />
                 <Text>Chargement . . .</Text>
               </VStack>
             </Center>
           )}
         </Stack>
+        <ProductDetail
+        id={productId}
+        open={isDetail}
+        close={() => setIsDetail(false)}
+      />
       </div>
     </>
   );

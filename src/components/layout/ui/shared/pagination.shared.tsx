@@ -8,13 +8,17 @@ import {
 import { useState } from "react"
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi"
 
+type props ={
+    itmes: any
+}
+
 const pageSize = 5
 const count = 50
 const items = new Array(count)
   .fill(0)
   .map((_, index) => `Lorem ipsum dolor sit amet ${index + 1}`)
 
-export const Demo = () => {
+export const TablePagination = ({items}:props) => {
   const [page, setPage] = useState(1)
 
   const startRange = (page - 1) * pageSize

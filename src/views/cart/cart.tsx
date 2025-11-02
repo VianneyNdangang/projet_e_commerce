@@ -21,7 +21,6 @@ import {
   FaTrash,
   FaMinus,
   FaPlus,
-  FaShoppingBag,
   FaArrowLeft,
 } from "react-icons/fa";
 import { useNavigate } from "react-router";
@@ -29,6 +28,8 @@ import type { CartItem } from "@/types/product.types";
 import { instance } from "@/helpers/api";
 import { CustomButton } from "@/components/ui/form/button.component";
 import { LuShoppingCart } from "react-icons/lu";
+import { DeleteToCart } from "@/handler/product.handler";
+import { notify, Toasters } from "@/components/layout/ui/shared/toaster.shared";
 
 export const Cart = () => {
   const navigate = useNavigate();
@@ -43,16 +44,17 @@ export const Cart = () => {
 
   const items = () => {
     return instance({
-      url: "carts",
+      url: `users/${1}`,
       method: "get",
     });
   };
 
   useEffect(() => {
     const load = async () => {
-      const mockCartItems = await items();
+      const mockCartItems = await items()
+      //  await instance.get(`users${1}`);
       setTimeout(() => {
-        setCartItems(mockCartItems.data);
+        setCartItems(mockCartItems.data.carts);
         setLoading(false);
       }, 1000);
     };
@@ -61,31 +63,27 @@ export const Cart = () => {
 
   const updateQuantity = (itemId: string, newQuantity: number) => {
     if (newQuantity <= 0) {
-      removeItem(itemId);
+      handelDelete(itemId);
       return;
     }
 
     setCartItems((prev) =>
       prev.map((item) =>
-        item.id === itemId
+        item.productId === itemId
           ? { ...item, quantity: Math.min(newQuantity, item.stock) }
           : item
       )
     );
   };
 
-  const del = async (id: string) => {
-    const request = await instance.delete(`carts/${id}`);
-    if (request.status == 200) {
-      setCartItems((prev) => prev.filter((item) => item.id !== id));
-    }
-  };
-
-  const removeItem = (itemId: string) => {
+  const handelDelete = (id: string) => {
     try {
-      del(itemId);
+      DeleteToCart(id, "1")
+      setCartItems(cartItems.filter((element) => element.productId !== id));
+      notify("success", 'Produit supprimé')
     } catch (error) {
-      console.log(error);
+      console.log(error) 
+      notify('error', 'Produit non supprimé')
     }
   };
 
@@ -163,7 +161,7 @@ export const Cart = () => {
 
   if (cartItems.length === 0) {
     return (
-      <EmptyState.Root size={"lg"} w={"full"}>
+      <EmptyState.Root size={"lg"}>
         <EmptyState.Content>
           <EmptyState.Indicator>
             <LuShoppingCart />
@@ -178,7 +176,7 @@ export const Cart = () => {
               size={"sm"}
               onClick={() => navigate("/articles")}
               color={"black"}
-              bg={"gray.200"}
+              bg={"white"}
               type={"button"}
               bg_H="blue.600"
               shadow_h="lg"
@@ -191,7 +189,7 @@ export const Cart = () => {
   }
 
   return (
-    <Container w={"full"} py={8}>
+    <><Container w={"full"} py={8}>
       <VStack gap={8} align="stretch">
         {/* Header */}
         <Flex justify="space-between" align="center" w={"full"}>
@@ -215,7 +213,7 @@ export const Cart = () => {
           <VStack gap={4} align="stretch">
             {cartItems.map((item) => (
               <Box
-                key={item.id}
+                key={item.productId}
                 p={6}
                 shadow="md"
                 border="1px solid"
@@ -235,8 +233,7 @@ export const Cart = () => {
                     w="120px"
                     h="120px"
                     objectFit="cover"
-                    borderRadius="md"
-                  />
+                    borderRadius="md" />
 
                   {/* Informations produit */}
                   <VStack align="start" gap={2}>
@@ -258,9 +255,7 @@ export const Cart = () => {
                       <IconButton
                         aria-label="Diminuer quantité"
                         size="sm"
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
-                        }
+                        onClick={() => updateQuantity(item.productId, item.quantity - 1)}
                         disabled={item.quantity <= 1}
                         color={"gray.500"}
                         bg={"none"}
@@ -269,21 +264,16 @@ export const Cart = () => {
                       </IconButton>
                       <Input
                         value={item.quantity}
-                        onChange={(e) =>
-                          updateQuantity(item.id, parseInt(e.target.value) || 0)
-                        }
+                        onChange={(e) => updateQuantity(item.productId, parseInt(e.target.value) || 0)}
                         w="60px"
                         textAlign="center"
                         size="sm"
                         min={1}
-                        max={item.stock}
-                      />
+                        max={item.stock} />
                       <IconButton
                         aria-label="Augmenter quantité"
                         size="sm"
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
-                        }
+                        onClick={() => updateQuantity(item.productId, item.quantity + 1)}
                         disabled={item.quantity >= item.stock}
                         color={"gray.500"}
                         bg={"none"}
@@ -304,7 +294,7 @@ export const Cart = () => {
                       size="sm"
                       color="red"
                       variant="outline"
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => handelDelete(item.productId)}
                     >
                       <FaTrash />
                     </IconButton>
@@ -385,19 +375,17 @@ export const Cart = () => {
                     placeholder="Entrez votre code"
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
-                    size="sm"
-                  />
+                    size="sm" />
                   <CustomButton
                     label={"Appliquer"}
                     size={"sm"}
                     onClick={applyCoupon}
                     disabled={!couponCode.trim()}
                     color={"white"}
-                    bg={"blue.500"}
+                    bg={"black"}
                     type={"button"}
                     bg_H="blue.600"
-                    shadow_h="lg"
-                  />
+                    shadow_h="lg" />
                 </HStack>
                 {appliedCoupon && (
                   <Text fontSize="sm" color="green.500">
@@ -413,23 +401,21 @@ export const Cart = () => {
                   size={"lg"}
                   onClick={proceedToCheckout}
                   color={"white"}
-                  bg={"blue.500"}
+                  bg={"black"}
                   type={"button"}
                   w="full"
                   bg_H="blue.600"
-                  shadow_h="lg"
-                />
+                  shadow_h="lg" />
                 <CustomButton
                   label={"Continuer mes achats"}
                   size={"lg"}
                   onClick={() => navigate("/articles")}
                   color={"black"}
-                  bg={"gray.100"}
+                  bg={"white"}
                   type={"button"}
                   w="full"
                   bg_H="gray.200"
-                  shadow_h="lg"
-                />
+                  shadow_h="lg" />
               </VStack>
 
               {/* Informations de sécurité */}
@@ -448,5 +434,7 @@ export const Cart = () => {
         </Grid>
       </VStack>
     </Container>
+    <Toasters />
+    </>
   );
 };

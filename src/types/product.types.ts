@@ -11,8 +11,8 @@ export interface ProductCategory {
   slug: string;
 }
 
-export interface Product {
-  id: number;
+export interface ProductType {
+  id: string;
   title: string;
   slug: string;
   description: string;
@@ -74,6 +74,7 @@ export interface User {
   isAdmin: boolean;
 }
 
+
 export interface Address {
   id: number;
   userId: number;
@@ -102,8 +103,7 @@ export interface StoreSettings {
 }
 
 export interface CartItem {
-  id: string;
-  productId: number;
+  productId: string;
   variantId?: string;
   title: string;
   price: number;

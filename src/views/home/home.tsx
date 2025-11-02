@@ -1,29 +1,35 @@
-import { HomeProductTable } from '@/components/layout/ui/shared/home.product.table.shared';
-import { instance } from '@/helpers/api';
-import { Stack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { HomeProductTable } from "@/components/layout/ui/shared/home.product.table.shared";
+import { instance } from "@/helpers/api";
+import { Center, Spinner, Stack, Text, VStack } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 
 export const Home = () => {
-  const [data, setDatas] = useState<any[]>([]);
 
-  const items = () => {
-    return instance({
-      url: 'bestSellersByCategory',
-      method: 'get',
-    });
+  const fetchUsers = async () => {
+    const data = await instance.get(`bestSellersByCategory`);
+    return data;
   };
 
-  useEffect(() => {
-    const load = async () => {
-      const resp = await items();
-      const dd = resp.data;
-      setDatas(dd);
-    };
-    load();
-  }, []);
+  const { data, isLoading } = useQuery({
+    queryKey: ["home"], // identifiant du cache
+    queryFn: fetchUsers, // la fonction qui appelle ton API
+    staleTime: 1000 * 60 * 5, // 5 minutes sans refetch
+  });
+
   return (
-    <Stack px={{md:5, base:2}}>
-    <HomeProductTable items={data} title={"Produits a la mode"}/>
+    <Stack px={{ md: 5, base: 2 }}>
+      {isLoading ? (
+        <Center py={12}>
+          <VStack gap={4}>
+            <Spinner size="xl" color="blue.500" />
+            <Text color="gray.600" fontSize="lg" fontWeight="medium">
+              Chargement des produits...
+            </Text>
+          </VStack>
+        </Center>
+      ) : (
+        <HomeProductTable items={data?.data} title={"Produits a la mode"} />
+      )}
     </Stack>
   );
 };
