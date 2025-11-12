@@ -16,19 +16,17 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router";
-import { FaUserCircle } from "react-icons/fa";
-import { AiOutlineShoppingCart, AiOutlineHeart } from "react-icons/ai";
+import { FaHeart, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { useLocation } from "react-router";
 import { HiMenu } from "react-icons/hi";
 import { CustomInput } from "../ui/form/input.component";
 import { FiSearch } from "react-icons/fi";
-import { Tooltip } from "../ui/tooltip";
+import { Tooltips} from "../ui/tooltip";
 import { useState } from "react";
 import { UserForm } from "@/views/security/form.user";
 import { useForm } from "react-hook-form";
 
 export const HeaderLayourt = () => {
-  // const userId = 1;
   const { ROUTES } = useMenuRoutes();
   const location = useLocation();
   const path = location.pathname;
@@ -57,27 +55,25 @@ export const HeaderLayourt = () => {
       onOpenChange={() => setOpen(false)}
     >
       <Portal>
-        <Drawer.Backdrop />
+        <Drawer.Backdrop/>
         <Drawer.Positioner>
-          <Drawer.Content>
+          <Drawer.Content  bg={"black"} color={"gray.100"}>
             <Drawer.Header>
-              <Drawer.Title fontSize={"xl"}>Menu</Drawer.Title>
+              <Drawer.Title fontSize={"2xl"}>Menu</Drawer.Title>
             </Drawer.Header>
-            <Separator mx={"3"} bg={"black"} border={"sm"} />
+            <Separator/>
             <Drawer.Body>
-              <VStack gap={"5"}>
-                <Box textAlign={"left"}>
+              <Stack gap={1}>
                   {ROUTES.map((item, index) => (
                     <Box key={index} onClick={() => setOpen(false)}>
                       <NavLink to={item.path}>
-                        <NavItem key={item.name} active={isActivePath(item)}>
-                          {item.name}
+                        <NavItem icon={item.icon} key={item.name} active={isActivePath(item)}>
+                          {item.label}
                         </NavItem>
                       </NavLink>
                     </Box>
                   ))}
-                </Box>
-              </VStack>
+              </Stack>
             </Drawer.Body>
           </Drawer.Content>
         </Drawer.Positioner>
@@ -129,12 +125,12 @@ export const HeaderLayourt = () => {
             </HStack>
           </HStack>
 
-          <HStack gap={"5"} display={{ base: "none", lg: "flex" }}>
+          <HStack gap={{base:3, xl:5}} display={{ base: "none", lg: "flex" }}>
             {ROUTES.map((item, index) => (
               <Box key={index}>
                 <NavLink to={item.path}>
                   <NavItem key={item.name} active={isActivePath(item)}>
-                    {item.name}
+                    {item.label}
                   </NavItem>
                 </NavLink>
               </Box>
@@ -142,10 +138,10 @@ export const HeaderLayourt = () => {
           </HStack>
 
           <HStack gap={{base:2, md:4}}>
-            <Stack display={{ base: "flex", lg: "none" }}>
+            <Stack display={{ base: "flex", xl: "none" }}>
               <FiSearch />
             </Stack>
-            <HStack display={{ base: "none", lg: "flex" }}>
+            <HStack display={{ base: "none", xl: "flex" }}>
               <form onSubmit={handleSubmit()}>
               <CustomInput
                 icon={<FiSearch />}
@@ -158,7 +154,7 @@ export const HeaderLayourt = () => {
               /></form>
             </HStack>
 
-            <Tooltip showArrow content="compte">
+            <Tooltips showArrow content="compte">
               <Icon
                 onClick={() => handleAcount()}
                 _hover={{ cursor: "pointer" }}
@@ -167,27 +163,27 @@ export const HeaderLayourt = () => {
               >
                 <FaUserCircle />
               </Icon>
-            </Tooltip>
-            <Tooltip showArrow content="Favoris">
+            </Tooltips>
+            <Tooltips showArrow content="Favoris">
               <Icon
                 onClick={() => navigate("/wishlist")}
                 _hover={{ cursor: "pointer" }}
                 color={Activeted("/wishlist") ? "blue.500" : "yellow.500"}
                 size={{ md: "lg", base: "sm" }}
               >
-                <AiOutlineHeart />
+                <FaHeart/>
               </Icon>
-            </Tooltip>
-            <Tooltip showArrow content="Chariot">
+            </Tooltips>
+            <Tooltips showArrow content="Chariot">
               <Icon
                 onClick={() => navigate("/bascket")}
                 _hover={{ cursor: "pointer" }}
                 color={Activeted("/bascket") ? "blue.500" : "yellow.500"}
                 size={{ md: "lg", base: "sm" }}
               >
-                <AiOutlineShoppingCart />
+                <FaShoppingCart/>
               </Icon>
-            </Tooltip>
+            </Tooltips>
           </HStack>
         </Flex>
       </Box>
@@ -201,7 +197,7 @@ export const HeaderLayourt = () => {
     </>
   );
 };
-const NavItem = ({ active, children, ...rest }: any) => {
+const NavItem = ({icon, active, children, ...rest }: any) => {
   return (
     <>
       <Flex
@@ -209,15 +205,25 @@ const NavItem = ({ active, children, ...rest }: any) => {
         onClick={rest.onClick}
         cursor="pointer"
         color={active ? "blue.500" : "gray.300"}
-        borderBottom={{ md: active ? "3px solid blue" : "none", base: "none" }}
+        borderBottom={active ? "2px solid" : "none"}
         rounded={"none"}
-        fontFamily={"cursive"}
+        fontFamily={"inherit"}
         fontWeight="semibold"
         _hover={{
           color: active ? "blue.600" : "white",
         }}
         {...rest}
       >
+         {icon && (
+          <Icon
+            mr='4'
+            fontSize='2xl'
+            _groupHover={{
+              color: 'white',
+            }}
+            as={icon}
+          />
+        )}
         <Text fontSize={{ md: "md", base: "lg" }}>{children}</Text>
       </Flex>
     </>

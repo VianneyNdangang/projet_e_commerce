@@ -1,5 +1,6 @@
 import {
   Drawer,
+  Flex,
   Grid,
   Portal,
   Stack,
@@ -33,27 +34,19 @@ export const DrawerComponent = ({
       <Portal>
         <Drawer.Backdrop />
         <Drawer.Positioner>
-          <Drawer.Content
-            roundedTop={placement === "bottom" ? "l3" : undefined}
-            roundedBottom={placement === "top" ? "l3" : undefined}
-          >
+          <Drawer.Content>
             <Drawer.Header>
               <Drawer.Title>{title}</Drawer.Title>
             </Drawer.Header>
             <Drawer.Body textAlign={"left"}>
-              <Grid
-                templateColumns={{
-                  md: `repeat(9, 1fr)`,
-                  base: `repeat(4, 1fr)`,
-                }}
-                gapX={"-2"}
+              <Flex
               >
                 {items.map((item, index) => (
-                  <Stack key={index} p={2} onClick={() => setOpen(false)}>
+                  <Stack key={index} onClick={() => setOpen(false)}>
                     {item}
                   </Stack>
                 ))}
-              </Grid>
+              </Flex>
             </Drawer.Body>
           </Drawer.Content>
         </Drawer.Positioner>

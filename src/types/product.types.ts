@@ -104,7 +104,7 @@ export interface StoreSettings {
 
 export interface CartItem {
   productId: string;
-  variantId?: string;
+  variants?: ProductVariant;
   title: string;
   price: number;
   quantity: number;

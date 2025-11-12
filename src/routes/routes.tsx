@@ -1,12 +1,14 @@
 import MainLayout from '@/components/layout/main.layourt';
 import { Home } from '@/views/home/home';
 import { ListProduct } from '@/views/products/products.list';
-import { ProductDetail } from '@/views/products/product.detail';
 import { Cart } from '@/views/cart/cart';
 // import { Home } from '@/views/home/home';
 import { createHashRouter } from 'react-router';
 import { Contact } from '@/views/contact/contact';
 import { ListPromotionProduct } from '@/views/promotion/promotion.list';
+import AboutPage from '@/views/about/about.page';
+import { NewArrivalsPage } from '@/views/news/news.products';
+import FavoritesPage from '@/views/favor/favor.product';
 
 export const routers = createHashRouter(
   [
@@ -44,11 +46,11 @@ export const routers = createHashRouter(
         },
         {
           path: '/wishlist',
-          element: <div> Favorie</div>,
+          element: <FavoritesPage/>,
         },
         {
           path: '/about',
-          element: <div> A propos de nous </div>,
+          element: <AboutPage/>,
         },
         {
           path: '/promotion',
@@ -56,7 +58,7 @@ export const routers = createHashRouter(
         },
         {
           path: '/news',
-          element: <div>Nouveautes</div>,
+          element: <NewArrivalsPage/>,
         },
         {
       path: '/contact',

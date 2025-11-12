@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { LuDollarSign } from "react-icons/lu";
 
 import {
   CloseButton,
@@ -18,16 +17,9 @@ type TInput = {
   disabled?: boolean;
   placeholder?: string;
   name: string;
-  control: any ;
+  control: any;
   defaultValue?: any;
-  type?:
-    | "email"
-    | "checkbox"
-    | "date"
-    | "password"
-    | "number"
-    | "search"
-    | "tel";
+  type?: "email"|"checkbox" | "date" | "password" | "number" | "search" | "tel";
   onchange?: any;
   min?: number;
   value?: string;
@@ -65,33 +57,36 @@ export const CustomInput = ({
         field.onChange("");
       }}
       me="-2"
+      bg={"none"}
+      border={"none"}
     />
   ) : undefined;
 
   return (
-    <FieldRoot 
-    invalid={error ? true : false}
-    >
+    <FieldRoot invalid={error ? true : false}>
       <FieldLabel>{label}</FieldLabel>
       {type === "password" ? (
-        <PasswordInput
-          size={size}
-          placeholder={placeholder}
-          onChange={field.onChange}
-          min={min}
-          value={field.value}
-          borderColor={error ? "red" : "none"}
-          border={error ? "1px" : "none"}
-          borderWidth={0.2}
-          focusRing="none"
-          backgroundColor="gray.100"
-          disabled={disabled}
-          autoComplete="off"
-        />
+        <InputGroup startElement={icon}>
+          <PasswordInput
+            size={size}
+            placeholder={placeholder}
+            onChange={field.onChange}
+            min={min}
+            value={field.value}
+            borderColor={error ? "red" : "none"}
+            border={error ? "1px" : "none"}
+            borderWidth={0.2}
+            focusRing="none"
+            backgroundColor="gray.100"
+            disabled={disabled}
+            autoComplete="off"
+            color={'black'}
+          />
+        </InputGroup>
       ) : type === "number" ? (
         <NumberInput.Root defaultValue="10" width="200px">
           <NumberInput.Control />
-          <InputGroup startElement={<LuDollarSign />}>
+          <InputGroup endElement={endElement} startElement={icon}>
             <NumberInput.Input
               placeholder={placeholder}
               onChange={field.onChange}
@@ -104,14 +99,12 @@ export const CustomInput = ({
               backgroundColor="gray.100"
               disabled={disabled}
               autoComplete="off"
+              color={'black'}
             />
           </InputGroup>
         </NumberInput.Root>
       ) : (
-        <InputGroup 
-        endElement={endElement}
-        startElement={icon}
-        >
+        <InputGroup endElement={endElement} startElement={icon}>
           <Input
             placeholder={placeholder}
             size={size}
@@ -127,9 +120,10 @@ export const CustomInput = ({
             type={type ?? "text"}
             autoComplete="off"
             min={min}
+            color={'black'}
           />
         </InputGroup>
-      )} 
+      )}
       {error && error.message && (
         <Field.ErrorText>{error?.message}</Field.ErrorText>
       )}

@@ -1,29 +1,42 @@
+import { FaBoxOpen, FaEnvelope, FaHome, FaInfoCircle, FaStar, FaTags } from "react-icons/fa";
 
 const useMenuRoutes = () => {
   const ROUTES = [
     {
       path: '/',
-      name: 'Accueil',
+      name: 'home',
+      icon: FaHome,
+       label: 'Accueil'
     },
     {
       path: '/articles',
-      name: 'Produits',
+      name: 'articles',
+      icon: FaBoxOpen,
+       label: 'Produits'
     },
     {
       path: '/promotion',
-      name: 'Promotion',
+      name: 'promotion',
+      icon: FaTags,
+      label: 'Promotion'
     },
     {
       path: '/news',
-      name: 'Nouveautes',
+      name: 'news',
+      icon: FaStar,
+      label: 'Nouveautes'
     },
     {
       path: '/about',
-      name: 'A propos',
+      name: 'about',
+      icon: FaInfoCircle,
+      label: 'A propos'
     },
     {
       path: '/contact',
-      name: 'Contact',
+      name: 'contact',
+      icon: FaEnvelope,
+      label: 'Contact'
     }
   ];
 

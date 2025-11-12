@@ -4,7 +4,7 @@ import { Button } from "@chakra-ui/react";
 type Props = {
   icon?: React.ReactNode;
   label?: string;
-  w?: any;
+  w?: string;
   size?: "sm" | "md" | "lg" |"xs"| "2xs";
   color: "blue.500" | "red.500" | "green.500" | "white" | "black";
   bg:
@@ -53,7 +53,7 @@ export const CustomButton = ({
         color={color}
         bg={bg}
         shadow={shadow}
-        rounded={"md"}
+        rounded={"sm"}
         loading={isLoading}
         w={w}
         onClick={onClick}
@@ -62,6 +62,7 @@ export const CustomButton = ({
         size={size}
         variant={"plain"}
         disabled={disabled}
+        border={"none"}
         _hover={{
           transform: "translateY(-2px)",
           shadow: shadow_h,

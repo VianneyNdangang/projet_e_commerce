@@ -24,9 +24,9 @@ import { IoClose } from "react-icons/io5";
 import {
   FaHeart,
   FaShoppingCart,
-  FaShare,
   FaMinus,
   FaPlus,
+  FaShareAlt,
 } from "react-icons/fa";
 import { BiCart } from "react-icons/bi";
 import type {
@@ -37,6 +37,7 @@ import type {
 import { notify, Toasters } from "@/components/layout/ui/shared/toaster.shared";
 import { AddToCart } from "@/handler/product.handler";
 import { CustomButton } from "@/components/ui/form/button.component";
+import { connectedUserId } from "@/boots/hooks/connected";
 type props = {
   id: string;
   open: boolean;
@@ -49,31 +50,43 @@ export const ProductDetail = ({ id, close, open }: props) => {
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>();
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      setLoading(true);
-      const [productResponse, reviewsResponse] = await Promise.all([
-        instance.get(`/products/${id}`),
-        instance.get(`/reviews?productId=${id}`),
-      ]);
+    if (id) {
+      const fetchProduct = async () => {
+        setLoading(true);
+        const [productResponse, reviewsResponse] = await Promise.all([
+          instance.get(`/products/${id}`),
+          instance.get(`/reviews?productId=${id}`),
+        ]);
 
-      setProduct(productResponse.data);
-      setReviews(reviewsResponse.data);
-      setSelectedVariant(productResponse.data.variants[0]);
-      setLoading(false);
-    };
-    fetchProduct();
+        setProduct(productResponse.data);
+        setReviews(reviewsResponse.data);
+        setSelectedVariant(productResponse?.data?.variants[1]);
+        setLoading(false);
+      };
+      fetchProduct();
+    }
   }, [id]);
 
-  const HandleAddToCart = (data: ProductType) => {
+  const HandleAddToCart = async (data: ProductType) => {
     try {
-      AddToCart(data, "1", quantity);
-      notify("success", "Le produit a ete ajoute au panier");
+      setIsLoading(true);
+      const response = await AddToCart(
+        connectedUserId,
+        data,
+        selectedVariant,
+        quantity
+      );
+      if (response == 200) {
+        notify("success", "Le produit a ete ajoute au panier");
+      }
     } catch (error) {
       notify("error", "Le produit n'a pas ete ajoute au panier");
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   const handleAddToWishlist = () => {
@@ -92,12 +105,12 @@ export const ProductDetail = ({ id, close, open }: props) => {
     }
   };
 
-  const currentPrice = selectedVariant 
+  const currentPrice = selectedVariant
     ? selectedVariant?.price
     : product?.price ?? 0;
   const currentStock = selectedVariant
     ? selectedVariant?.stock
-    : product?.stock;
+    : product?.stock ?? 0;
   const hasDiscount =
     product?.compareAtPrice && product.compareAtPrice > currentPrice;
   const discountPercentage = hasDiscount
@@ -115,14 +128,20 @@ export const ProductDetail = ({ id, close, open }: props) => {
         open={open}
         onOpenChange={() => close()}
       >
-        <Dialog.Trigger asChild>
-        </Dialog.Trigger>
+        <Dialog.Trigger asChild></Dialog.Trigger>
         <Portal>
           <Dialog.Backdrop />
           <Dialog.Positioner>
             <Dialog.Content>
               <DialogHeader>
-                <CustomButton icon={<IoClose/>} size={"sm"} color={"black"} bg={"white"} type={"button"} onClick={()=> close()}/>
+                <CustomButton
+                  icon={<IoClose />}
+                  size={"sm"}
+                  color={"black"}
+                  bg={"white"}
+                  type={"button"}
+                  onClick={() => close()}
+                />
               </DialogHeader>
               {loading ? (
                 <Center minH="50vh">
@@ -145,14 +164,13 @@ export const ProductDetail = ({ id, close, open }: props) => {
                     >
                       {/* Images du produit */}
                       <Box>
-                        <VStack gap={2} bg="white" rounded="md" p={2}>
+                        <VStack gap={2} bg="white" rounded="sm" p={2}>
                           {/* Image principale */}
                           <Box
                             position="relative"
-                            borderRadius="lg"
+                            rounded="sm"
                             overflow="hidden"
                             bg="white"
-                            rounded="md"
                             p={2}
                           >
                             <Image
@@ -161,6 +179,7 @@ export const ProductDetail = ({ id, close, open }: props) => {
                               w="full"
                               h="full"
                               objectFit="cover"
+                              rounded={"sm"}
                             />
                             {hasDiscount && (
                               <Badge
@@ -191,7 +210,7 @@ export const ProductDetail = ({ id, close, open }: props) => {
                                   w="80px"
                                   h="80px"
                                   objectFit="cover"
-                                  borderRadius="md"
+                                  rounded="sm"
                                   cursor="pointer"
                                   border={
                                     selectedImageIndex === index
@@ -267,7 +286,7 @@ export const ProductDetail = ({ id, close, open }: props) => {
                             </HStack>
                             {hasDiscount && (
                               <Text color="green.600" fontSize="sm" mt={1}>
-                                Vous économisez
+                                Vous économisez{" "}
                                 {(
                                   product.compareAtPrice! - currentPrice
                                 ).toFixed(2)}
@@ -315,7 +334,7 @@ export const ProductDetail = ({ id, close, open }: props) => {
                                       bg: "blue.600",
                                       color: "white",
                                     }}
-                                    _focus={{ outline:"none"}}
+                                    _focus={{ outline: "none" }}
                                   >
                                     {variant.name}
                                   </Button>
@@ -381,7 +400,7 @@ export const ProductDetail = ({ id, close, open }: props) => {
                                 }
                                 fontSize="sm"
                               >
-                                {currentStock > 0
+                                {currentStock ?? currentStock > 0
                                   ? `${currentStock} en stock`
                                   : "Rupture de stock"}
                               </Text>
@@ -406,7 +425,7 @@ export const ProductDetail = ({ id, close, open }: props) => {
                               </HStack>
                             </Box>
                           )}
-                          <Box rounded="md" py={2}>
+                          <Box rounded="sm" py={2}>
                             <Text fontSize="sm" color="gray.600">
                               SKU: {product.sku}
                             </Text>
@@ -424,7 +443,7 @@ export const ProductDetail = ({ id, close, open }: props) => {
                   <Dialog.Footer
                     justifyContent={"center"}
                     bg={"white"}
-                    rounded={"md"}
+                    rounded={"sm"}
                   >
                     <VStack gap={2} w={"full"}>
                       <HStack
@@ -438,6 +457,7 @@ export const ProductDetail = ({ id, close, open }: props) => {
                           aria-label="Open menu"
                           display={{ base: "flex", md: "none" }}
                           onClick={() => HandleAddToCart(product)}
+                          loading={isLoading}
                           bg={"blue.500"}
                           color={"white"}
                           variant="ghost"
@@ -445,24 +465,23 @@ export const ProductDetail = ({ id, close, open }: props) => {
                         >
                           <BiCart size={24} />
                         </IconButton>
-                        <Button
-                          colorScheme="blue"
-                          display={{ base: "none", md: "flex" }}
-                          size="lg"
-                          flex="1"
-                          onClick={() => HandleAddToCart(product)}
-                          loading={loading}
-                          disabled={currentStock === 0}
-                          bg="blue.500"
-                          shadow="md"
-                          _focus={{ outline: "none" }}
-                          _hover={{
-                            bg: "blue.600",
-                          }}
-                        >
-                          <FaShoppingCart style={{ marginRight: "8px" }} />
-                          Ajouter au panier
-                        </Button>
+                        <Box display={{ base: "none", md: "flex" }} w={"full"}>
+                          <CustomButton
+                            icon={
+                              <FaShoppingCart style={{ marginRight: "8px" }} />
+                            }
+                            label={"Ajouter au panier"}
+                            isLoading={isLoading}
+                            color={"white"}
+                            bg={"blue.500"}
+                            type={"button"}
+                            w="full"
+                            size="lg"
+                            onClick={() => HandleAddToCart(product)}
+                            shadow="md"
+                            bg_H="blue.600"
+                          />
+                        </Box>
                         <IconButton
                           aria-label="Ajouter aux favoris"
                           size="lg"
@@ -494,7 +513,7 @@ export const ProductDetail = ({ id, close, open }: props) => {
                             color: "white",
                           }}
                         >
-                          <FaShare />
+                          <FaShareAlt />
                         </IconButton>
                       </HStack>
                       {reviews.length > 0 && (
@@ -510,7 +529,8 @@ export const ProductDetail = ({ id, close, open }: props) => {
                                 p={6}
                                 border="1px solid"
                                 borderColor="gray.200"
-                                borderRadius="md"
+                                rounded="sm"
+                                w={"full"}
                               >
                                 <VStack align="start" gap={3}>
                                   <HStack justify="space-between" w="full">

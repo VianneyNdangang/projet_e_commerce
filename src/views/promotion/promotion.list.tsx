@@ -46,7 +46,7 @@ export const ListPromotionProduct = () => {
       >
         Promotion
       </Heading>
-      {promotionProduct.length !== 0 ? 
+      {promotionProduct.length > 0 ? 
       <Stack px={{ md: 5, base: 2 }}>
         <Table title="Promotion" items={promotionProduct} />
       </Stack> :

@@ -1,52 +1,55 @@
 import { instance } from "@/helpers/api";
-import type { ProductType } from "@/types/product.types";
-// import { useState } from "react";
-
-type props = {
-  productId: string;
-  title: string;
-  price: number;
-  quantity?: number;
-  images: string;
-  stock: number;
-};
-
+import type {
+  CartItem,
+  ProductType,
+  ProductVariant,
+} from "@/types/product.types";
 
 export const AddToCart = async (
-  product: ProductType,
   userid: string,
+  product: ProductType,
+  variant?: ProductVariant,
   quantity?: number
 ) => {
-  // const [oldDatas, setOldDatas] = useState<props[]>([]);
-  let oldDatas: props[] = [];
-  const data: props = {
+  let oldDatas: CartItem[] = [];
+  const data: CartItem = {
     productId: product?.id,
     title: product?.title,
-    price: product?.price,
+    price: variant?.price ? variant.price : product?.price,
     quantity: quantity ? quantity : 1,
-    images: product?.images[0],
-    stock: product?.stock,
+    image: product?.images[0],
+    variants: variant,
+    stock: variant?.stock ? variant.stock : product?.stock,
   };
   const fetchData = async () => {
     const item = await instance.get(`users/${userid}`);
     return item?.data.carts;
   };
   oldDatas = await fetchData();
-  const datas: props[] = oldDatas;
+  const datas: CartItem[] = oldDatas;
   datas.push(data);
 
-  instance.patch(`users/${userid}`, { carts: datas });
+  const patchResponse = await instance.patch(`users/${userid}`, { carts: datas });
+  console.log(" patchResponse.status patchResponse.status", patchResponse.status)
+  return patchResponse.status
 };
 
-export const DeleteToCart = async (id: string, userid: string) => {
-  let oldDatas: props[] = [];
-  const fetchData = async () => {
-    const item = await instance.get(`users/${userid}`);
-    return item?.data.carts;
-  };
-  oldDatas = await fetchData();
-  let datas: props[] = oldDatas;
-  datas = datas.filter((element: props) => element.productId !== id);
 
-  instance.patch(`users/${userid}`, { carts: datas });
+export const DeleteToCart = async (
+  userId: string,
+  productId: string,
+  product?: CartItem
+) => {
+  // try {
+    const response = await instance.get(`users/${userId}`);
+    const oldCart: CartItem[] = response?.data?.carts || [];
+
+    const updatedCart = oldCart.filter((item) => {
+      // On supprime si le même productId ET la même variante (s’il y en a)
+      const sameProduct = item.productId === productId;
+      const sameVariant = item.variants?.id === product?.variants?.id;
+      return !(sameProduct && sameVariant);
+    });
+    const patchResponse = await instance.patch(`users/${userId}`, { carts: updatedCart });
+    return patchResponse.status
 };

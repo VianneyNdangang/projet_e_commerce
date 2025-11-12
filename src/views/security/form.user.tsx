@@ -16,17 +16,27 @@ import { useState } from "react";
 import { schemaLogin, schemaSignIn, userSignIn } from "@/handler/users.handler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { notify, Toasters } from "@/components/layout/ui/shared/toaster.shared";
+import { LuLock, LuMail, LuPhone, LuShieldCheck, LuUser } from "react-icons/lu";
+import { ScrollAnimationBox } from "@/components/layout/ui/shared/animation";
 type props = {
   open: boolean;
   close: () => void;
 };
 
 export const UserForm = ({ open, close }: props) => {
-  const { control: LoginControl, handleSubmit: handleLogin, reset: LoginReset } = useForm<any>({
+  const {
+    control: LoginControl,
+    handleSubmit: handleLogin,
+    reset: LoginReset,
+  } = useForm<any>({
     resolver: zodResolver(schemaLogin),
     mode: "onChange",
   });
-  const { control: SignInControl, handleSubmit: handleSignIn, reset: SignInReset } = useForm<any>({
+  const {
+    control: SignInControl,
+    handleSubmit: handleSignIn,
+    reset: SignInReset,
+  } = useForm<any>({
     resolver: zodResolver(schemaSignIn),
     mode: "onChange",
   });
@@ -35,18 +45,21 @@ export const UserForm = ({ open, close }: props) => {
   const [signLoading, setSignLoading] = useState<boolean>(false);
 
   const Login = (data: any) => {
+    console.log(data);
+    LoginReset();
     setLoginLoading(true);
   };
 
   const SignIn = (data: any) => {
     try {
-      setSignLoading(true)
-      userSignIn(data)
-      notify("success", "Votre compte a ete créé")
-      SignInReset()
-      close()
+      setSignLoading(true);
+      userSignIn(data);
+      notify("success", "Votre compte a ete créé");
+      SignInReset();
+      close();
     } catch (error) {
-      notify("error", "Votre compte n'a pas ete créé")
+      notify("error", "Votre compte n'a pas ete créé");
+      console.log(error);
     }
     setSignLoading(false);
   };
@@ -73,19 +86,21 @@ export const UserForm = ({ open, close }: props) => {
                     label="Nom de l'utilisateur"
                     control={LoginControl}
                     size={"sm"}
+                    icon={<LuUser />}
                   />
                   <CustomInput
-                    placeholder={"Entrez votre mot de passe"}
+                    placeholder="Entrez votre mot de passe"
                     type={"password"}
                     name="password"
                     label="Mot de passe"
                     control={LoginControl}
+                    icon={<LuLock />}
                   />
                 </VStack>
                 <CustomButton
                   label="Connexion"
                   color={"white"}
-                  size="sm"
+                  size="md"
                   w="full"
                   type={"submit"}
                   bg={"black"}
@@ -116,12 +131,12 @@ export const UserForm = ({ open, close }: props) => {
         open={isformOpen}
         close={() => setIsformOpen(false)}
         body={
-          <Box rounded={"md"}>
+          <Box rounded={"sm"}>
             <Stack direction={{ base: "column", md: "row" }}>
               <Box
                 w="full"
                 roundedRight={{ md: "4xl", base: "none" }}
-                rounded={"md"}
+                rounded={"sm"}
                 shadow={"lg"}
                 bgImage={"url('form-image.jpg')"}
                 bgSize={"auto"}
@@ -130,7 +145,7 @@ export const UserForm = ({ open, close }: props) => {
                 <Box
                   p={2}
                   roundedRight={{ md: "4xl", base: "none" }}
-                  rounded={"md"}
+                  rounded={"sm"}
                   bg={"rgba(0, 0, 0, 0.6)"}
                   h={"full"}
                 >
@@ -140,14 +155,19 @@ export const UserForm = ({ open, close }: props) => {
                     h={"full"}
                     justifyContent={"center"}
                   >
-                    <Heading fontSize={"2xl"} pb={2}>
-                      Creation d'un compte
-                    </Heading>
-                    <Text pb={2} textAlign={"center"}>
-                      <b>Remplicez tous les champs pour creer votre compte</b>{" "}
-                      <br /> Apres avoir créé votre compte, vous aurez access a
-                      toutes les fonctionnalités du site
-                    </Text>
+                    <ScrollAnimationBox
+                      children={
+                        <><Heading fontSize={"2xl"}>
+                          Creation d'un compte
+                        </Heading>
+                           {/* <ScrollAnimationBox duration={1}
+                            children={ */}
+                          <Text textAlign={"center"}>
+                            <b>Remplicez tous les champs pour creer votre compte</b>{" "}
+                            <br /> Apres avoir créé votre compte, vous aurez access a
+                            toutes les fonctionnalités du site
+                          </Text></> }
+                    />
                   </VStack>
                 </Box>
               </Box>
@@ -159,12 +179,14 @@ export const UserForm = ({ open, close }: props) => {
                       name="lastName"
                       control={SignInControl}
                       label="Nom"
+                      icon={<LuUser />}
                     />
                     <CustomInput
                       placeholder={"Entrez votre prénom"}
                       name="firstName"
                       control={SignInControl}
                       label="Prénom"
+                      icon={<LuUser />}
                     />
                     <CustomInput
                       placeholder={"Entrez votre e-mail"}
@@ -172,12 +194,14 @@ export const UserForm = ({ open, close }: props) => {
                       name="email"
                       control={SignInControl}
                       label="E-mail"
+                      icon={<LuMail />}
                     />
                     <CustomInput
                       placeholder={"Entrez votre numero de téléphone"}
                       name="phone"
                       control={SignInControl}
                       label="Numéro de téléphone"
+                      icon={<LuPhone />}
                     />
                     <Stack direction={{ base: "column", md: "row" }} w={"full"}>
                       <CustomInput
@@ -186,6 +210,7 @@ export const UserForm = ({ open, close }: props) => {
                         name="password"
                         control={SignInControl}
                         label="Mot de passe"
+                        icon={<LuLock />}
                       />
                       <CustomInput
                         placeholder={"Confirmez votre mot de passe"}
@@ -193,13 +218,14 @@ export const UserForm = ({ open, close }: props) => {
                         name="confirmPassword"
                         control={SignInControl}
                         label="Confirmation"
+                        icon={<LuShieldCheck />}
                       />
                     </Stack>
                   </VStack>
                   <CustomButton
                     label="Connexion"
                     color={"white"}
-                    size="sm"
+                    size="md"
                     w="full"
                     type={"submit"}
                     bg={"black"}
@@ -212,7 +238,7 @@ export const UserForm = ({ open, close }: props) => {
         }
         size={{ md: "xl", base: "xs" }}
       />
-      <Toasters/>
+      <Toasters />
     </>
   );
 };
