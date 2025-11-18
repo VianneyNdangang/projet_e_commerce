@@ -193,12 +193,8 @@ export const NewArrivalsPage = () => {
                 </Text>
                 <CustomButton
                       label={"Ajouter au panier"}
-                      color={"white"}
-                      bg={"black"}
                       type={"button"}
                       onClick={() => alert("Ajouté au panier")}
-                      size="sm"
-                      w="full"
                     />
               </Box>
             </MotionBox>

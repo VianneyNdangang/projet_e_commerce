@@ -4,7 +4,6 @@ import {
   HStack,
   Image,
   Stack,
-  Strong,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -19,6 +18,7 @@ import { notify } from "@/components/layout/ui/shared/toaster.shared";
 import { useState } from "react";
 import { instance } from "@/helpers/api";
 import { motion } from "framer-motion";
+import ContactForm from "./contact.form";
 
 const MotionBox = motion(Box);
 const MotionImage = motion(Image);
@@ -118,58 +118,8 @@ export const Contact = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1 }}
               >
-                <form onSubmit={handleSubmit(submitMessage)}>
-                  <VStack
-                    gap={2}
-                    w={"full"}
-                    h={"full"}
-                    justifyContent={"center"}
-                  >
-                    <CustomInput
-                      label="Nom"
-                      placeholder="Entrez votre nom"
-                      size="md"
-                      isDisabled={false}
-                      icon={<LuUser />}
-                      name="name"
-                      control={control}
-                    />
-                    <CustomInput
-                      label="Téléphone"
-                      placeholder="Entrez votre numéro de telephone"
-                      size="md"
-                      isDisabled={false}
-                      icon={<LuPhone />}
-                      name="phone"
-                      control={control}
-                    />
-                    <CustomInput
-                      label="E-mail"
-                      placeholder="Entrez votre email"
-                      type="email"
-                      size="md"
-                      isDisabled={false}
-                      icon={<LuMail />}
-                      name="email"
-                      control={control}
-                    />
-                    <CustomTextarea
-                      label={"Message"}
-                      placeholder={"Laissez nous votre message"}
-                      control={control}
-                      name={"message"}
-                    />
-                    <CustomButton
-                      label={"Envoyer"}
-                      w="full"
-                      size={"lg"}
-                      color={"white"}
-                      bg={"black"}
-                      type={"submit"}
-                      isLoading={loading}
-                    />
-                  </VStack>
-                </form>
+               
+                <ContactForm />
               </MotionBox>
             </Flex>
           </Box>

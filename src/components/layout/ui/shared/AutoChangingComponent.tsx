@@ -1,6 +1,6 @@
-import { Box, Text, VStack, Image } from "@chakra-ui/react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { Box, Text, VStack, Image } from '@chakra-ui/react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 const MotionBox = motion(Box);
 
@@ -14,27 +14,26 @@ type Slide = {
 const slides: Slide[] = [
   {
     id: 1,
-    title: "Nouvelles Collections 🌟",
+    title: 'Nouvelles Collections 🌟',
     description:
-      "Découvrez nos derniers arrivages de produits exclusifs sélectionnés avec soin.",
+      'Découvrez nos derniers arrivages de produits exclusifs sélectionnés avec soin.',
     image:
-      "https://i.postimg.cc/R0jpNxsP/pexels-markus-winkler-1430818-3812433.jpg",
+      'https://i.postimg.cc/R0jpNxsP/pexels-markus-winkler-1430818-3812433.jpg',
   },
   {
     id: 2,
-    title: "Livraison Rapide 🚚",
+    title: 'Livraison Rapide 🚚',
     description:
-      "Profitez d’une expérience d’achat fluide avec une expédition express en 24h.",
-    image:
-      "https://i.postimg.cc/rmm3t9MS/pexels-ketut-subiyanto-4247766.jpg",
+      'Profitez d’une expérience d’achat fluide avec une expédition express en 24h.',
+    image: 'https://i.postimg.cc/rmm3t9MS/pexels-ketut-subiyanto-4247766.jpg',
   },
   {
     id: 3,
-    title: "Offres Exclusives 💸",
+    title: 'Offres Exclusives 💸',
     description:
-      "Ne manquez pas nos réductions hebdomadaires sur vos produits préférés.",
+      'Ne manquez pas nos réductions hebdomadaires sur vos produits préférés.',
     image:
-      "https://i.postimg.cc/bv3NhLmY/pexels-joslyn-pickens-2185980-3833052-1.jpg",
+      'https://i.postimg.cc/bv3NhLmY/pexels-joslyn-pickens-2185980-3833052-1.jpg',
   },
 ];
 
@@ -56,7 +55,7 @@ export default function AutoChangingContent() {
       overflow="hidden"
       bg="gray.50"
       w="full"
-      h={{ base: "200px", md: "300px" }}
+      h={{ base: '200px', md: '500px' }}
     >
       <AnimatePresence mode="wait">
         <MotionBox
@@ -69,7 +68,7 @@ export default function AutoChangingContent() {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -50 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
+          transition={{ duration: 1.2, ease: 'easeInOut' }}
         >
           <Image
             src={current.image}
@@ -78,6 +77,17 @@ export default function AutoChangingContent() {
             h="full"
             objectFit="cover"
             filter="brightness(60%)"
+          />
+          <MotionBox
+            bg={'rgba(57, 3, 75, 0.6)'}
+            h={'full'}
+            w={'full'}
+            initial={{ scale: 1.2 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 2.5, ease: 'easeOut' }}
+            position="absolute"
+            inset={0}
+            bgGradient="linear(to-b, blackAlpha.700, blackAlpha.500)"
           />
           <VStack
             position="absolute"
@@ -92,7 +102,7 @@ export default function AutoChangingContent() {
             color="white"
           >
             <Text
-              fontSize={{ base: "2xl", md: "4xl" }}
+              fontSize={{ base: '2xl', md: '4xl' }}
               fontWeight="bold"
               mb={4}
               textShadow="0 4px 12px rgba(0,0,0,0.5)"
@@ -100,7 +110,7 @@ export default function AutoChangingContent() {
               {current.title}
             </Text>
             <Text
-              fontSize={{ base: "md", md: "lg" }}
+              fontSize={{ base: 'md', md: 'lg' }}
               maxW="2xl"
               textShadow="0 2px 8px rgba(0,0,0,0.5)"
             >

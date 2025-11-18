@@ -1,248 +1,237 @@
-import { ScrollAnimationBox } from "@/components/layout/ui/shared/animation";
-import { HomeProductTable } from "@/components/layout/ui/shared/home.product.table.shared";
-import { instance } from "@/helpers/api";
 import {
   Box,
   Button,
-  Center,
+  Flex,
+  // Flex,
   Grid,
   Heading,
+  Icon,
   Image,
-  Spinner,
+  Separator,
   Stack,
   Text,
   VStack,
-} from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import CategoriesSection from "./grid";
-import { motion } from "framer-motion";
-import AutoChangingContent from "@/components/layout/ui/shared/AutoChangingComponent";
+} from '@chakra-ui/react';
+import { motion } from 'framer-motion';
+import AutoChangingContent from '@/components/layout/ui/shared/AutoChangingComponent';
+import { CustomButton } from '@/components/ui/form/button.component';
+import { instance } from '@/helpers/api';
+import { useQuery } from '@tanstack/react-query';
+import { FaCogs, FaPersonBooth, FaShieldAlt, FaWrench } from 'react-icons/fa';
 
 export const Home = () => {
   const MotionBox = motion(Box);
   const MotionText = motion(Text);
   const MotionImage = motion(Image);
+  const MotionStack = motion(Stack);
+
   const fetchUsers = async () => {
-    const data = await instance.get(`bestSellersByCategory`);
-    return data;
-  };
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["home"], // identifiant du cache
-    queryFn: fetchUsers, // la fonction qui appelle ton API
-    staleTime: 1000 * 60 * 5, // 5 minutes sans refetch
-  });
-
-  // const links = [
-  //   { name: "Open roles", href: "#" },
-  //   { name: "Internship program", href: "#" },
-  //   { name: "Our values", href: "#" },
-  //   { name: "Meet our leadership", href: "#" },
-  // ];
-  // const stats = [
-  //   { name: "Offices worldwide", value: "12" },
-  //   { name: "Full-time colleagues", value: "300+" },
-  //   { name: "Hours per week", value: "40" },
-  //   { name: "Paid time off", value: "Unlimited" },
-  // ];
+      const data = await instance.get(`projects`);
+      return data;
+    };
+  
+    const { data } = useQuery({
+      queryKey: ['projects'], // identifiant du cache
+      queryFn: fetchUsers, // la fonction qui appelle ton API
+      refetchOnWindowFocus: false, // ❌ Ne pas relancer quand la fenêtre revient en focus
+      refetchOnMount: false, // ❌ Ne pas relancer au remontage
+      refetchOnReconnect: false, // ❌ Ne pas relancer à la reconnexion réseau
+      staleTime: Infinity, // Garde les donnees toujours freches
+    });
+    const project = data?.data;
+    console.log('projectproject', project);
 
   return (
     <>
       <Box
         position="relative"
-        h={{ base: "80vh", md: "90vh" }}
+        h={{ base: '90vh', md: '90vh' }}
         display="flex"
         alignItems="center"
         justifyContent="center"
         overflow="hidden"
+        // bg={'purple.950'}
+        // bgimage="url(https://i.postimg.cc/sXs14s6K/istockphoto-1171642453-1024x1024.jpg)"
+        // bgSize="cover"
+        // bgPosition="center"
+        // bgRepeat={'no-repeat'}
       >
         <MotionImage
-          src="https://i.postimg.cc/BnrLHt85/pexels-solliefoto-298863.jpg"
-          alt="Hero"
+          src="https://i.postimg.cc/sXs14s6K/istockphoto-1171642453-1024x1024.jpg"
+          alt="About us"
           objectFit="cover"
           w="full"
           h="full"
           initial={{ scale: 1.2 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 3, ease: "easeOut" }}
+          transition={{ duration: 2.5, ease: 'easeOut' }}
         />
-        <MotionBox
-          bg={"rgba(0, 0, 0, 0.6)"}
-          h={"full"}
-          w={"full"}
+        <MotionStack
+          bg={'rgba(0, 0, 0, 0.6)'}
+          h={'full'}
           initial={{ scale: 1.2 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 2.5, ease: "easeOut" }}
+          transition={{ duration: 2.5, ease: 'easeOut' }}
           position="absolute"
+          direction={{ base: 'column', md: 'row' }}
           inset={0}
-          bgGradient="linear(to-b, blackAlpha.700, blackAlpha.500)"
-        />
-        <Box
-          position="absolute"
-          inset={0}
-          bgGradient="linear(to-b, blackAlpha.600, blackAlpha.700)"
-        />
-        <VStack gap={4} position="absolute" textAlign="center" color="white">
-          <MotionText
-            fontSize={{ base: "3xl", md: "6xl" }}
-            fontWeight="bold"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+        >
+          <Box w={'full'} position="relative" alignContent={'end'}>
+            <Stack
+              gap={4}
+              justify={'center'}
+              color="white"
+              h={'full'}
+              w="full"
+              textAlign={{ base: 'center', md: 'right' }}
+              align={{ base: 'center', md: 'end' }}
+              py={5}
+              px={{ base: '1', md: '0' }}
+            >
+              <MotionText
+                fontSize={{ base: 'xl', md: '3xl' }}
+                fontWeight="bold"
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+              >
+                Bienvemue chez INDUSTRIAL WORKSHOP
+              </MotionText>
+              <Text fontSize={{ base: 'md', md: 'xl' }} color="gray.200">
+                Bienvenue dans notre atelier industriel, un espace où
+                l’innovation, la précision et l’expertise se rencontrent pour
+                donner vie à des projets d’exception. Nous sommes fiers de
+                mettre à votre disposition un environnement moderne, équipé de
+                technologies avancées et conçu pour répondre aux exigences les
+                plus élevées du secteur industriel.
+              </Text>
+              <CustomButton type={'button'} label="Découvrez nos services" />
+            </Stack>
+          </Box>
+          <Separator
+            orientation={{ base: 'horizontal', md: 'vertical' }}
+            size={'md'}
+          />
+          <Box
+            h={'full'}
+            w={'full'}
+            justifyContent={{ base: 'center', md: 'left' }}
+            display={'flex'}
+            alignItems={'center'}
           >
-            Découvrez Nos Boissons d'Exception
-          </MotionText>
-          <Text fontSize={{ base: "md", md: "xl" }} color="gray.200">
-            Laissez-vous tenter par notre sélection raffinée.
-          </Text>
-          <Button
-            // rightIcon={<ArrowForwardIcon />}
-            colorScheme="yellow"
-            size="lg"
-            _hover={{ transform: "scale(1.05)" }}
-          >
-            Explorer la boutique
-          </Button>
-        </VStack>
+            <Image
+              src="https://i.postimg.cc/nV430kd3/istockphoto-1660807390-1024x1024-removebg-preview.png"
+              alt="Hero"
+              boxSize={{ base: '200px', md: '400px' }}
+              objectFit="contain"
+              bg={'orange.300'}
+              p={4}
+              rounded={'full'}
+            />
+          </Box>
+        </MotionStack>
       </Box>
       <Box py={10} px={2}>
-        <AutoChangingContent/>
-      </Box>
-      <Box py={16} px={{ base: 4, md: 10 }}>
-        <Heading mb={8} textAlign="center">
-          Catégories Populaires
-        </Heading>
-        <Grid
-          templateColumns={{
-            base: "repeat(1, 1fr)",
-            sm: "repeat(2, 1fr)",
-            md: "repeat(4, 1fr)",
-          }}
-          gap={6}
+        <Heading
+          fontSize={{ base: '3xl', md: '6xl' }}
+          color={'purple.900'}
+          mb={8}
+          textAlign="center"
         >
-          {categories.map((cat) => (
-            <MotionBox
-              key={cat.id}
-              position="relative"
-              rounded="sm"
-              overflow="hidden"
-              whileHover={{ scale: 1.03 }}
-              transition={{ duration: 0.4 }}
-              cursor="pointer"
-            >
-              <Image
-                src={cat.image}
-                alt={cat.title}
-                objectFit="cover"
-                h="300px"
-                w="full"
-              />
-              <Box
-                position="absolute"
-                inset={0}
-                bgGradient="linear(to-b, blackAlpha.600, blackAlpha.300)"
-              />
-              <Text
-                position="absolute"
-                bottom={4}
-                left={4}
-                color="white"
-                fontSize="2xl"
-                fontWeight="semibold"
-              >
-                {cat.title}
-              </Text>
-            </MotionBox>
-          ))}
-        </Grid>
+          Nos valeurs
+        </Heading>
+        <AutoChangingContent />
       </Box>
-
-      <CategoriesSection />
-      <ScrollAnimationBox
-        children={
-          <Stack px={{ md: 5, base: 2 }}>
-            {isLoading ? (
-              <Center py={12}>
-                <VStack gap={4}>
-                  <Spinner size="xl" color="blue.500" />
-                  <Text color="gray.600" fontSize="lg" fontWeight="medium">
-                    Chargement des produits...
-                  </Text>
-                </VStack>
-              </Center>
-            ) : (
-              <HomeProductTable
-                items={data?.data}
-                title={"Produits a la mode"}
+      <Box>
+         <Heading
+          fontSize={{ base: '3xl', md: '6xl' }}
+          color={'purple.900'}
+          mb={8}
+          textAlign="center"
+        >
+          Nos Services
+        </Heading>
+      <Flex
+        direction={{ base: 'column', md: 'row' }}
+        align="center"
+        justify="center"
+        gap={3}
+        py={10}
+        px={{base:4, md:20}}
+      >
+        {services &&
+          services.map((service: any) => (
+            <Box
+              key={service.id}
+              textAlign="center"
+              w= 'full'
+            >
+             
+              <Icon
+                as={service.icon}
+                boxSize={12}
+                mb={4}
+                color='orange'
               />
-            )}
-            
-          </Stack>
-        }
-      />
 
+              <Text fontSize="xl" fontWeight="bold" mb={2}>
+                {service.title}
+              </Text>
+              <Text fontSize="md" color="gray.600">
+                {service.description}
+              </Text>
+            </Box>
+          ))}
+      </Flex>
+      </Box>
+      {/* <CategoriesSection /> */}
       <Box py={16} px={{ base: 4, md: 10 }} bg="white">
-        <Heading mb={8} textAlign="center">
-          Produits Vedettes
+        <Heading
+          fontSize={{ base: '3xl', md: '6xl' }}
+          color={'purple.900'}
+          mb={8}
+          textAlign="center"
+        >
+          Quelque réalisations
         </Heading>
         <Grid
           templateColumns={{
-            base: "repeat(1, 1fr)",
-            sm: "repeat(2, 1fr)",
-            md: "repeat(3, 1fr)",
+            base: 'repeat(1, 1fr)',
+            // sm: 'repeat(2, 1fr)',
+            md: 'repeat(2, 1fr)',
           }}
           gap={8}
         >
-          {products.map((p) => (
+          {project?.map((p) => (
             <MotionBox
               key={p.id}
-              bg="gray.100"
               rounded="sm"
               overflow="hidden"
               whileHover={{ y: -8 }}
-              transition={{ type: "spring", stiffness: 200 }}
+              transition={{ type: 'spring', stiffness: 200 }}
             >
+              <Flex direction={{base: 'column', md: 'row'}}>
               <Image
                 src={p.image}
-                alt={p.name}
                 h="250px"
                 w="full"
                 objectFit="cover"
               />
               <Box p={4}>
-                <Text fontWeight="semibold" fontSize="lg">
-                  {p.name}
+                <Heading fontSize="xl" mb={4} fontWeight={'bolder'} textAlign={'center'}>{p.title}</Heading>
+                <Text fontWeight="semibold" fontSize="lg" textAlign={'center'}>
+                  {p.description}
                 </Text>
-                <Text color="yellow.600" fontWeight="bold" mt={2}>
-                  ${p.price.toFixed(2)}
-                </Text>
-                <Button
-                  mt={3}
-                  colorScheme="yellow"
-                  size="sm"
-                  w="full"
-                  _hover={{ bg: "yellow.500" }}
-                >
-                  Ajouter au panier
-                </Button>
               </Box>
+              </Flex>
             </MotionBox>
           ))}
         </Grid>
       </Box>
 
       {/* CALL TO ACTION */}
-      <Box
-        py={20}
-        // bgGradient="linear(to-r, yellow.400, yellow.500)"
-        textAlign="center"
-        color="white"
-        px={2}
-        bgGradient="to-r"
-        gradientFrom="orange.500"
-        gradientTo="black"
-      >
-        <Heading fontSize={{ base: "2xl", md: "4xl" }} mb={4}>
+      <Box py={20} textAlign="center" color="purple.900" px={2} bg="orange.600">
+        <Heading fontSize={{ base: '2xl', md: '4xl' }} mb={4}>
           Rejoignez Notre Communauté de Passionnés
         </Heading>
         <Text fontSize="lg" mb={6}>
@@ -255,257 +244,30 @@ export const Home = () => {
     </>
   );
 };
-
-// // --- Données dynamiques ---
-const categories = [
-  {
-    id: 1,
-    title: "Wines",
-    image:
-      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=2940&auto=format&fit=crop",
-  },
-  {
-    id: 2,
-    title: "Whiskey",
-    image:
-      "https://images.unsplash.com/photo-1571104508999-893933ded431?q=80&w=2940&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    title: "Vodka",
-    image:
-      "https://images.unsplash.com/photo-1626897505254-e0f811aa9bf7?q=80&w=2940&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    title: "Brandy",
-    image:
-      "https://images.unsplash.com/photo-1693680501357-a342180f1946?q=80&w=2940&auto=format&fit=crop",
-  },
-  {
-    id: 1,
-    title: "Wines",
-    image:
-      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=2940&auto=format&fit=crop",
-  },
-  {
-    id: 2,
-    title: "Whiskey",
-    image:
-      "https://images.unsplash.com/photo-1571104508999-893933ded431?q=80&w=2940&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    title: "Vodka",
-    image:
-      "https://images.unsplash.com/photo-1626897505254-e0f811aa9bf7?q=80&w=2940&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    title: "Brandy",
-    image:
-      "https://images.unsplash.com/photo-1693680501357-a342180f1946?q=80&w=2940&auto=format&fit=crop",
-  },
-  {
-    id: 1,
-    title: "Wines",
-    image:
-      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=2940&auto=format&fit=crop",
-  },
-  {
-    id: 2,
-    title: "Whiskey",
-    image:
-      "https://images.unsplash.com/photo-1571104508999-893933ded431?q=80&w=2940&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    title: "Vodka",
-    image:
-      "https://images.unsplash.com/photo-1626897505254-e0f811aa9bf7?q=80&w=2940&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    title: "Brandy",
-    image:
-      "https://images.unsplash.com/photo-1693680501357-a342180f1946?q=80&w=2940&auto=format&fit=crop",
-  }
-];
-
-const products = [
-  {
-    id: 1,
-    name: "Premium Red Wine",
-    image:
-      "https://images.unsplash.com/photo-1601924638867-3ec3b1d8d8b7?q=80&w=2940&auto=format&fit=crop",
-    price: 29.99,
-  },
-  {
-    id: 2,
-    name: "Classic Whiskey",
-    image:
-      "https://images.unsplash.com/photo-1563194800-33f5b8d89e5a?q=80&w=2940&auto=format&fit=crop",
-    price: 49.99,
-  },
-  {
-    id: 3,
-    name: "Gin Tonic Bottle",
-    image:
-      "https://images.unsplash.com/photo-1504675099198-7023dd85f5a3?q=80&w=2940&auto=format&fit=crop",
-    price: 24.99,
-  },
-];
-
-// // --- Composant principal ---
-// export const Home= ()=> {
-//   return (
-//     <Box bg="gray.50" minH="100vh">
-//       {/* HERO SECTION */}
-//       <Box
-//         position="relative"
-//         h={{ base: "80vh", md: "90vh" }}
-//         display="flex"
-//         alignItems="center"
-//         justifyContent="center"
-//         overflow="hidden"
-//       >
-//         <MotionImage
-//           src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2940&auto=format&fit=crop"
-//           alt="Hero"
-//           objectFit="cover"
-//           w="full"
-//           h="full"
-//           initial={{ scale: 1.2 }}
-//           animate={{ scale: 1 }}
-//           transition={{ duration: 3, ease: "easeOut" }}
-//         />
-//         <Box
-//           position="absolute"
-//           inset={0}
-//           bgGradient="linear(to-b, blackAlpha.600, blackAlpha.700)"
-//         />
-//         <VStack gap={4} position="absolute" textAlign="center" color="white">
-//           <MotionText
-//             fontSize={{ base: "3xl", md: "6xl" }}
-//             fontWeight="bold"
-//             initial={{ opacity: 0, y: 40 }}
-//             animate={{ opacity: 1, y: 0 }}
-//             transition={{ duration: 1 }}
-//           >
-//             Découvrez Nos Boissons d'Exception
-//           </MotionText>
-//           <Text fontSize={{ base: "md", md: "xl" }} color="gray.200">
-//             Laissez-vous tenter par notre sélection raffinée.
-//           </Text>
-//           <Button
-//             // rightIcon={<ArrowForwardIcon />}
-//             colorScheme="yellow"
-//             size="lg"
-//             _hover={{ transform: "scale(1.05)" }}
-//           >
-//             Explorer la boutique
-//           </Button>
-//         </VStack>
-//       </Box>
-
-//       {/* CATÉGORIES */}
-//       <Box py={16} px={{ base: 4, md: 10 }}>
-//         <Heading mb={8} textAlign="center">
-//           Catégories Populaires
-//         </Heading>
-//         <Grid
-//           templateColumns={{ base: "repeat(1, 1fr)", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)" }}
-//           gap={6}
-//         >
-//           {categories.map((cat) => (
-//             <MotionBox
-//               key={cat.id}
-//               position="relative"
-//               borderRadius="xl"
-//               overflow="hidden"
-//               whileHover={{ scale: 1.03 }}
-//               transition={{ duration: 0.4 }}
-//               cursor="pointer"
-//             >
-//               <Image src={cat.image} alt={cat.title} objectFit="cover" h="300px" w="full" />
-//               <Box
-//                 position="absolute"
-//                 inset={0}
-//                 bgGradient="linear(to-b, blackAlpha.600, blackAlpha.300)"
-//               />
-//               <Text
-//                 position="absolute"
-//                 bottom={4}
-//                 left={4}
-//                 color="white"
-//                 fontSize="2xl"
-//                 fontWeight="semibold"
-//               >
-//                 {cat.title}
-//               </Text>
-//             </MotionBox>
-//           ))}
-//         </Grid>
-//       </Box>
-
-//       {/* PRODUITS VEDETTES */}
-//       <Box py={16} px={{ base: 4, md: 10 }} bg="white">
-//         <Heading mb={8} textAlign="center">
-//           Produits Vedettes
-//         </Heading>
-//         <Grid
-//           templateColumns={{ base: "repeat(1, 1fr)", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
-//           gap={8}
-//         >
-//           {products.map((p) => (
-//             <MotionBox
-//               key={p.id}
-//               bg="gray.100"
-//               borderRadius="lg"
-//               overflow="hidden"
-//               whileHover={{ y: -8 }}
-//               transition={{ type: "spring", stiffness: 200 }}
-//             >
-//               <Image src={p.image} alt={p.name} h="250px" w="full" objectFit="cover" />
-//               <Box p={4}>
-//                 <Text fontWeight="semibold" fontSize="lg">
-//                   {p.name}
-//                 </Text>
-//                 <Text color="yellow.600" fontWeight="bold" mt={2}>
-//                   ${p.price.toFixed(2)}
-//                 </Text>
-//                 <Button
-//                   mt={3}
-//                   colorScheme="yellow"
-//                   size="sm"
-//                   w="full"
-//                   _hover={{ bg: "yellow.500" }}
-//                 >
-//                   Ajouter au panier
-//                 </Button>
-//               </Box>
-//             </MotionBox>
-//           ))}
-//         </Grid>
-//       </Box>
-
-//       {/* CALL TO ACTION */}
-//       <Box
-//         py={20}
-//         bgGradient="linear(to-r, yellow.400, yellow.500)"
-//         textAlign="center"
-//         color="white"
-//       >
-//         <Heading fontSize={{ base: "2xl", md: "4xl" }} mb={4}>
-//           Rejoignez Notre Communauté de Passionnés
-//         </Heading>
-//         <Text fontSize="lg" mb={6}>
-//           Inscrivez-vous à notre newsletter et recevez des offres exclusives.
-//         </Text>
-//         <Button colorScheme="blackAlpha" variant="solid" size="lg">
-//           S’inscrire maintenant
-//         </Button>
-//       </Box>
-//     </Box>
-//   );
-// }
+const services = [
+    {
+      "id": 1,
+      "title": "Custom Machining",
+      "description": "High-precision CNC machining for all types of components.",
+      "icon": FaCogs
+    },
+    {
+      "id": 2,
+      "title": "Industrial Automation",
+      "description": "Design and installation of automated production lines.",
+      "icon": FaPersonBooth
+    },
+    {
+      "id": 3,
+      "title": "Maintenance & Repairs",
+      "description": "Comprehensive maintenance and repair services for industrial equipment.",
+      "icon": FaWrench
+    },
+    {
+      "id": 4,
+      "title": "Safety Consulting",
+      "description": "Expert advice and installation of safety systems for factories.",
+      "icon": FaShieldAlt
+    },
+    
+  ]
