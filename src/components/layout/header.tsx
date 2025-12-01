@@ -13,7 +13,6 @@ import {
   Strong,
   Text,
   useDisclosure,
-  VStack,
 } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router";
 import { FaHeart, FaShoppingCart, FaUserCircle } from "react-icons/fa";
@@ -47,6 +46,10 @@ export const HeaderLayourt = () => {
   const handleAcount = () => {
     setIsLogin(true);
   };
+
+  const handleSearch = (data:string) =>{
+    console.log("search data", data);
+  }
 
   const mobile = (
     <Drawer.Root
@@ -142,7 +145,7 @@ export const HeaderLayourt = () => {
               <FiSearch />
             </Stack>
             <HStack display={{ base: "none", xl: "flex" }}>
-              <form onSubmit={handleSubmit()}>
+              <form onSubmit={handleSubmit(handleSearch)}>
               <CustomInput
                 icon={<FiSearch />}
                 placeholder={"Recheche"}

@@ -3,13 +3,13 @@ import { instance } from "@/helpers/api";
 import { Box, Grid, Image, Text, Flex } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 
-type Category = {
-  id: number;
-  title: string;
-  image: string;
-  colSpan: { base: number; sm?: number; md?: number };
-  subcategories?: Category[];
-};
+// type Category = {
+//   id: number;
+//   title: string;
+//   image: string;
+//   colSpan: { base: number; sm?: number; md?: number };
+//   subcategories?: Category[];
+// };
 
 // const categories: Category[] = [
 //   {
@@ -100,7 +100,7 @@ export default function CategoriesSection() {
         return data;
       };
     
-      const { data, isLoading } = useQuery({
+      const { data } = useQuery({
         queryKey: ["bestcategories"], // identifiant du cache
         queryFn: fetchUsers, // la fonction qui appelle ton API
         staleTime: 1000 * 60 * 5, // 5 minutes sans refetch
@@ -136,7 +136,7 @@ export default function CategoriesSection() {
               <CategoryCard title={cat.title} image={cat.image} />
               {cat.products && (
                 <Grid templateColumns="repeat(2, 1fr)" gap={2}>
-                  {cat.products.map((sub) => (
+                  {cat.products.map((sub:any) => (
                     <CategoryCard
                       key={sub.id}
                       title={sub.title}

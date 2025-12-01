@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { TileLayer, Marker, Popup, MapContainer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import {type FC} from "react";
+import { type FC } from "react";
 
 interface MapProps {
   latitude: number;
@@ -19,14 +19,11 @@ const MapComponent: FC<MapProps> = ({
   return (
     <Box w="90%" h="400px" rounded="sm" overflow="hidden" boxShadow="lg">
       <MapContainer
-        center={position}
-        zoom={15}
+        // center={position}
+        // zoom={15}
         style={{ height: "100%", width: "100%" }}
       >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-        />
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Marker position={position}>
           <Popup>{name}</Popup>
         </Marker>

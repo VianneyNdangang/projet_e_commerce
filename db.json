@@ -5357,12 +5357,20 @@
       "isAdmin": false,
       "carts": [
         {
-          "productId": "102",
-          "title": "Machine à Espresso MiniBar",
-          "price": 89.5,
+          "productId": "105",
+          "title": "Lampe LED de Lecture",
+          "price": 24.99,
           "quantity": 1,
-          "image": "https://placehold.co/600x400/png/ffffff/000000?text=Espresso+MiniBar",
-          "stock": 12
+          "image": "https://i.postimg.cc/hGQnRSD2/image-1.png",
+          "stock": 130
+        },
+        {
+          "productId": "105",
+          "title": "Lampe LED de Lecture",
+          "price": 24.99,
+          "quantity": 1,
+          "image": "https://i.postimg.cc/hGQnRSD2/image-1.png",
+          "stock": 130
         }
       ]
     },
@@ -6613,6 +6621,10 @@
     {
       "id": "f65c",
       "email": "test@gmail.com"
+    },
+    {
+      "id": "293c",
+      "email": "ndangangvianney@gmail.com"
     }
   ],
   "mails": [
@@ -6639,11 +6651,32 @@
       "phone": "691948056",
       "email": "ndangangvianney@gmail.com",
       "message": "ffrrder"
+    },
+    {
+      "id": "073f",
+      "name": "",
+      "phone": "",
+      "email": "",
+      "message": ""
+    },
+    {
+      "id": "b547",
+      "name": "",
+      "phone": "",
+      "email": "",
+      "message": ""
+    },
+    {
+      "id": "9605",
+      "name": "",
+      "phone": "",
+      "email": "",
+      "message": ""
     }
   ],
   "executives": [
     {
-      "id": 1,
+      "id": "1",
       "name": "John Dupont",
       "position": "Chief Executive Officer",
       "email": "john.dupont@company.com",
@@ -6654,7 +6687,7 @@
       "bio": "Responsible for the overall strategy and growth of the company."
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Sophia Green",
       "position": "Marketing Director",
       "email": "sophia.green@company.com",
@@ -6665,7 +6698,7 @@
       "bio": "Oversees branding, communication, and advertising strategies."
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Mark Taylor",
       "position": "Chief Technology Officer",
       "email": "mark.taylor@company.com",
@@ -6676,7 +6709,7 @@
       "bio": "Manages the technical infrastructure and software development projects."
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Estelle Morgan",
       "position": "Human Resources Manager",
       "email": "estelle.morgan@company.com",
@@ -6687,7 +6720,7 @@
       "bio": "Leads recruitment, employee training, and workplace well-being programs."
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "David Evans",
       "position": "Chief Accountant",
       "email": "david.evans@company.com",

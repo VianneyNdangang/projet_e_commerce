@@ -15,7 +15,7 @@ import { useState } from "react";
 import { FaHeartBroken } from "react-icons/fa";
 
 const MotionBox = motion(Box);
-const MotionImage = motion(Image);
+// const MotionImage = motion(Image);
 const MotionText = motion(Text);
 
 type Favorite = {

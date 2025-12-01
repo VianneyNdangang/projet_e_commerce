@@ -30,7 +30,7 @@ import {
 } from "react-icons/fa";
 import { CustomButton } from "../ui/form/button.component";
 import { instance } from "@/helpers/api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { notify } from "./ui/shared/toaster.shared";
 import { LuMail } from "react-icons/lu";
@@ -76,7 +76,11 @@ export const FooterLayourt = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const emailSubmit = (data: any) => {
+  interface EmailFormData {
+    [key: string]: string;
+  }
+
+  const emailSubmit = (data: EmailFormData) => {
     try {
       setLoading(true);
       instance.post(`newsLetters`, data);
@@ -84,6 +88,7 @@ export const FooterLayourt = () => {
       reset();
     } catch (error) {
       notify("error", "Une erreur es survenue lors de l'enregistrement");
+      console.log("error", error);
     }
     setLoading(false);
   };
@@ -103,7 +108,7 @@ export const FooterLayourt = () => {
                 whiteSpace="nowrap"
                 py={4}
               >
-                {partner?.map((p, index) => (
+                {partner?.map((p: { logo: string; name: string }, index: number) => (
                   <Box key={index} minW="200px" textAlign="center">
                     <HStack gap={3} justify="center">
                       <Text fontSize="2xl">{p.logo}</Text>

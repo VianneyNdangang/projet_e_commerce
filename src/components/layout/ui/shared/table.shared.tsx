@@ -16,14 +16,10 @@ import {
   Stack,
   SimpleGrid,
   Pagination,
-  usePaginationContext,
   ButtonGroup,
-  type IconButtonProps,
   Flex,
-  Spacer,
-  useBreakpointValue,
 } from "@chakra-ui/react";
-import { HiChevronLeft, HiChevronRight, HiStar } from "react-icons/hi";
+import { HiStar } from "react-icons/hi";
 import { FaShoppingCart, FaHeart, FaEye } from "react-icons/fa";
 import { DrawerComponent } from "./drawer.shared";
 import { FiGrid } from "react-icons/fi";
@@ -66,7 +62,7 @@ export const Table = ({ items, title }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>();
   const [page, setPage] = useState(1);
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  // const isMobile = useBreakpointValue({ base: true, md: false });
   const pageSize = 32; // 🔸 produits par page
 
   const handleAddToCart = async (data: ProductType) => {
@@ -195,7 +191,7 @@ export const Table = ({ items, title }: Props) => {
                 </VStack>
                 <Separator pb={4} />
 
-                {item?.product.length > 0 ? (
+                {item?.product?.length > 0 ? (
                   <SimpleGrid
                     columns={{ base: 2, sm: 3, md: 4, lg: 5 }}
                     gap={2}
@@ -433,7 +429,7 @@ export const Table = ({ items, title }: Props) => {
                   </Box>
                 )} */}
 
-                {items.length > 0 ? (
+                {items?.length > 0 ? (
                   <Pagination.Root
                     count={item?.product?.length}
                     pageSize={pageSize}

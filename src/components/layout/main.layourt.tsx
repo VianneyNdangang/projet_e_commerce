@@ -2,7 +2,7 @@ import { Box, Stack } from "@chakra-ui/react";
 import { Outlet, useLocation } from "react-router";
 import { HeaderLayourt } from "./header";
 import { FooterLayourt } from "./footer";
-import { AnimatePresence, motion } from "framer-motion";
+// import { AnimatePresence, motion } from "framer-motion";
 
 const MainLayout = () => {
   const location = useLocation();

@@ -4,7 +4,6 @@ import {
   HStack,
   Image,
   Stack,
-  Strong,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -25,9 +24,13 @@ const MotionImage = motion(Image);
 const MotionText = motion(Text)
 
 export const Contact = () => {
-  const { control, handleSubmit } = useForm();
+  interface ContactFormData {
+    [key: string]: string;
+  }
+
+  const { control, handleSubmit } = useForm<ContactFormData>();
   const [loading, setLoading] = useState<boolean>(false);
-  const submitMessage = (data: any) => {
+  const submitMessage = (data: ContactFormData) => {
     try {
       setLoading(true);
       instance.post(`mails`, data);
